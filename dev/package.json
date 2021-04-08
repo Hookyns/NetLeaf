@@ -1,0 +1,12 @@
+{
+    "author": "Roman Jámbor",
+    "license": "MIT",
+    "description": "Folder with development testing code.",
+    "engines": {
+        "node": ">=14"
+    },
+    "devDependencies": {
+        "typescript": "^4.2.4",
+        "@types/node": "^14.14.37"
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "name": "@netleaf/extensions-file-provider",
+    "version": "0.1.0",
+    "description": "FileProvider extension for NetLeaf application hosting framework.",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "prepare": "tsc"
+    },
+    "keywords": [
+        "netleaf",
+        "framework",
+        "extension",
+        "file",
+        "provider",
+        "library"
+    ],
+    "author": "Roman Jámbor",
+    "license": "MIT",
+    "engines": {
+        "node": ">=14"
+    },
+    "devDependencies": {
+        "@types/node": "^14.14.37",
+        "typescript": "^4.2.3"
+    },
+    "dependencies": {
+        "@netleaf/common": "^0.1.0"
+    },
+    "files": [
+        "index.js",
+        "index.d.ts",
+        "index.js.map",
+        "src/**/*.js",
+        "src/**/*.d.ts",
+        "src/**/*.js.map"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Hookyns/NetLeaf.git",
+        "directory": "libraries/extensions-file-provider"
+    }
+}
