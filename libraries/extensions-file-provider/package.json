@@ -1,12 +1,15 @@
 {
+    "private": true,
     "name": "@netleaf/extensions-file-provider",
     "version": "0.1.0",
     "description": "FileProvider extension for NetLeaf application hosting framework.",
-    "module": "src/index.js",
-    "types": "src/index.d.ts",
+    "main": "index.js",
+    "types": "index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "prepare": "tsc"
+        "prepare": "npm run build",
+        "build": "tsc && node postbuild.mjs",
+        "publish": "npm run build && npm publish dist"
     },
     "keywords": [
         "netleaf",
@@ -29,16 +32,16 @@
         "@netleaf/common": "^0.1.0"
     },
     "files": [
-        "index.js",
-        "index.d.ts",
-        "index.js.map",
-        "src/**/*.js",
-        "src/**/*.d.ts",
-        "src/**/*.js.map"
+        "**/*.js",
+        "**/*.d.ts",
+        "**/*.js.map"
     ],
     "repository": {
         "type": "git",
         "url": "https://github.com/Hookyns/NetLeaf.git",
         "directory": "libraries/extensions-file-provider"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }

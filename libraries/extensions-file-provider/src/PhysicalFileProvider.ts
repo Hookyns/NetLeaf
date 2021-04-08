@@ -22,6 +22,7 @@ export class PhysicalFileProvider implements IFileProvider
 	async getFileInfo(path: string): Promise<IFileInfo>
 	{
 		path = resolve(this.#rootDirectory, path);
+		
 		try
 		{
 			const stats = await fs.lstat(path);
@@ -35,8 +36,6 @@ export class PhysicalFileProvider implements IFileProvider
 		}
 		catch (ex)
 		{
-			console.log(ex);
-
 			return {
 				isDirectory: false,
 				name: basename(path),

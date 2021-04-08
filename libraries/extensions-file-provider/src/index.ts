@@ -1,10 +1,10 @@
-export * from "./src/PhysicalFileProvider";
-import type IFileInfo       from "./src/IFileInfo";
-import type IFileProvider   from "./src/IFileProvider";
+import { PhysicalFileProvider } from "./PhysicalFileProvider";
+import type IFileInfo           from "./IFileInfo";
+import type IFileProvider       from "./IFileProvider";
 
-// export {
-// 	PhysicalFileProvider
-// };
+export {
+	PhysicalFileProvider
+};
 
 export type {
 	IFileInfo,
