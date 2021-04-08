@@ -1,4 +1,5 @@
 {
+    "private": true,
     "author": "Roman Jámbor",
     "license": "MIT",
     "description": "NetLeaf is an application hosting framework that is trying to standardize application development in Node.js.",

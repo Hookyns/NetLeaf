@@ -2,8 +2,8 @@
     "name": "@netleaf/extensions-file-provider",
     "version": "0.1.0",
     "description": "FileProvider extension for NetLeaf application hosting framework.",
-    "main": "index.js",
-    "types": "index.d.ts",
+    "module": "src/index.js",
+    "types": "src/index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "prepare": "tsc"

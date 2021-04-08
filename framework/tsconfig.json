@@ -24,8 +24,6 @@
         "experimentalDecorators": true
     },
     "include": [
-        "framework/index.ts",
-        "framework/src",
-        "dev"
+        "src/**/*.ts"
     ]
 }
