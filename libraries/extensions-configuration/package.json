@@ -1,4 +1,5 @@
 {
+    "private": true,
     "name": "@netleaf/extensions-configuration",
     "version": "0.1.0",
     "description": "Configuration extension for NetLeaf application hosting framework.",
@@ -6,7 +7,8 @@
     "types": "index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "prepare": "tsc"
+        "build": "tsc && node ../../scripts/postbuild.mjs",
+        "publish": "npm run build && npm publish dist"
     },
     "keywords": [
         "netleaf",
@@ -27,15 +29,13 @@
     },
     "dependencies": {
         "@netleaf/common": "^0.1.0",
+        "@netleaf/extensions-file-provider": "^0.2.1",
         "json5": "^2.2.0"
     },
     "peerDependencies": {
         "minimist": "^1.2.5"
     },
     "files": [
-        "index.js",
-        "index.d.ts",
-        "index.js.map",
         "src/**/*.js",
         "src/**/*.d.ts",
         "src/**/*.js.map"
@@ -44,5 +44,11 @@
         "type": "git",
         "url": "https://github.com/Hookyns/NetLeaf.git",
         "directory": "libraries/extensions-configuration"
+    },
+    "bugs": {
+        "url": "https://github.com/Hookyns/NetLeaf/issues"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }

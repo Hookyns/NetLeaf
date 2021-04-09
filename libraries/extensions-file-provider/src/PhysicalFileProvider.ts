@@ -1,9 +1,9 @@
-import { resolve, basename } from "path";
 import * as fs               from "fs/promises";
+import { basename, resolve } from "path";
 import IFileInfo             from "./IFileInfo";
 import IFileProvider         from "./IFileProvider";
 
-export class PhysicalFileProvider implements IFileProvider
+export default class PhysicalFileProvider implements IFileProvider
 {
 	readonly #rootDirectory: string;
 
@@ -22,7 +22,7 @@ export class PhysicalFileProvider implements IFileProvider
 	async getFileInfo(path: string): Promise<IFileInfo>
 	{
 		path = resolve(this.#rootDirectory, path);
-		
+
 		try
 		{
 			const stats = await fs.lstat(path);

@@ -1,22 +1,32 @@
-import ErrorWrap                 from "@netleaf/common/src/errors/ErrorWrap";
-import ConfigurationProviderBase from "./ConfigurationProviderBase";
+import ErrorWrap                   from "@netleaf/common/src/errors/ErrorWrap";
+import * as path                   from "path";
+import ConfigurationBuilderContext from "../ConfigurationBuilderContext";
+import ConfigurationProviderBase   from "./ConfigurationProviderBase";
 
 export default class JsConfigurationProvider extends ConfigurationProviderBase
 {
 	/**
-	 * Path to configuration file
+	 * Path to configuration file.
 	 * @private
 	 */
 	readonly #configurationPath: string;
 
 	/**
-	 * Construct instance of ConfigurationProvider
-	 * @param configurationPath
+	 * Configuration context.
+	 * @private
 	 */
-	constructor(configurationPath: string)
+	readonly #context: ConfigurationBuilderContext;
+
+	/**
+	 * Construct instance of ConfigurationProvider.
+	 * @param configurationPath
+	 * @param context
+	 */
+	constructor(configurationPath: string, context: ConfigurationBuilderContext)
 	{
 		super();
 		this.#configurationPath = configurationPath;
+		this.#context = context;
 	}
 
 	/**
@@ -39,9 +49,29 @@ export default class JsConfigurationProvider extends ConfigurationProviderBase
 	{
 		let result;
 
+		const fileProvider = this.#context.getFileProvider();
+		let configurationPath = this.#configurationPath;
+
+		if (fileProvider)
+		{
+			const fileInfo = await fileProvider.getFileInfo(configurationPath);
+
+			if (!fileInfo.exists)
+			{
+				throw new Error(`Configuration JS file '${configurationPath}' does not exists or is not accessible.`);
+			}
+
+			configurationPath = fileInfo.path;
+		}
+		else if (!path.isAbsolute(configurationPath))
+		{
+			throw new Error(`Unable to resolve path of JS configuration file '${configurationPath}'.`
+				+ `Use absolute path or set FileProvider instance into ConfigurationBuilderContext properties with key '${ConfigurationBuilderContext.FileProviderPropertyKey}'.`);
+		}
+
 		try
 		{
-			result = await import(this.#configurationPath);
+			result = await import(configurationPath);
 		}
 		catch (ex)
 		{

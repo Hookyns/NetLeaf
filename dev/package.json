@@ -8,5 +8,8 @@
     "devDependencies": {
         "typescript": "^4.2.4",
         "@types/node": "^14.14.37"
+    },
+    "dependencies": {
+        "@netleaf/extensions-file-provider": "^0.2.0"
     }
 }

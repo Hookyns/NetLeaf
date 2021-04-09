@@ -15,6 +15,11 @@ export default class Configuration implements IConfiguration, IConfigurationSect
 	 */
 	set root(root: IRootConfiguration)
 	{
+		if (!root || !root.providers)
+		{
+			throw new Error("Invalid root value.");
+		}
+
 		this.#root = root;
 	}
 
@@ -48,7 +53,7 @@ export default class Configuration implements IConfiguration, IConfigurationSect
 	/**
 	 * @inheritDoc
 	 */
-	get<TValue = any>(key: string): TValue
+	get<TValue = any>(key: string): TValue | undefined
 	{
 		if (!this.#root)
 		{
@@ -65,9 +70,33 @@ export default class Configuration implements IConfiguration, IConfigurationSect
 	{
 		if (!this.#root)
 		{
-			throw new Error(`RootConfiguration has not beet set to this Configuration with path ${this.#path}.`);
+			throw new Error(`This configuration with path '${this.#path}' miss reference to the RootConfiguration.`);
+		}
+
+		if (!sectionName)
+		{
+			throw new Error(`Invalid name of the section '${sectionName}'.`);
 		}
 
 		return new Configuration(this.#root, PathHelper.combine(this.#path, sectionName));
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	getSections(): Array<IConfigurationSection>
+	{
+		let sectionNames = new Set<string>();
+		
+		for (const provider of this.#root?.providers || [])
+		{
+			const value = provider.get("");
+
+			if (value !== undefined) {
+				Object.keys(value).forEach(key => sectionNames.add(key));
+			}
+		}
+		
+		return Array.from(sectionNames).map(key => new Configuration(this.#root, key));
 	}
 }

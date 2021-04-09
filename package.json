@@ -15,6 +15,7 @@
     "scripts": {
         "dev": "tsc -w",
         "dev:tests": "tsc -w -p tests/tsconfig.json",
-        "test": "tsc -p tests/tsconfig.json && jest"
+        "build:tests": "tsc -p tests/tsconfig.json",
+        "test": "npm run build:tests && jest"
     }
 }

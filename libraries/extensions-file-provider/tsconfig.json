@@ -14,7 +14,7 @@
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
         "resolveJsonModule": true,
-//        "isolatedModules": true,
+        "isolatedModules": true,
         "baseUrl": ".",
         "outDir": "./dist",
         "stripInternal": true,

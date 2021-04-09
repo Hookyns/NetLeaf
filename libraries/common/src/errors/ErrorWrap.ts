@@ -30,7 +30,7 @@ export default class ErrorWrap extends Error
 	constructor(message: string, innerError: Error)
 	{
 		super(message);
-		
+
 		if (!innerError)
 		{
 			throw new Error("Argument 'innerError' cannot be falsy.");
@@ -40,12 +40,12 @@ export default class ErrorWrap extends Error
 
 		if (!this.stack)
 		{
-			Error.captureStackTrace(this, this.constructor)
+			Error.captureStackTrace(this, this.constructor);
 		}
-		
+
 		const innerName = innerError.constructor.name ? " " + innerError.constructor.name : "";
 
-		this.stack = this.stack 
+		this.stack = this.stack
 			+ NewLine
 			+ ErrorWrap.stackWithMessage(innerError, `InnerError${innerName}: ${innerError.message}`);
 	}
@@ -61,7 +61,7 @@ export default class ErrorWrap extends Error
 		const stack = error.stack || "";
 		const match = error.message.match(EndOfLineRegex);
 		const lines = match ? match.length + 1 : 1;
-		
+
 		return newMessage + NewLine
 			+ stack.split(EndOfLineRegex).slice(lines).join(NewLine);
 	}

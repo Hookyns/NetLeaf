@@ -1,4 +1,5 @@
-import IRootConfiguration from "./IRootConfiguration";
+import ConfigurationValueProvider from "./ConfigurationValueProvider";
+import IRootConfiguration         from "./IRootConfiguration";
 
 export default interface IConfigurationBuilder
 {
@@ -30,13 +31,19 @@ export default interface IConfigurationBuilder
 	 * Add an IConfigurationProvider that reads configuration from in-memory object.
 	 * @param object
 	 */
-	addObject(object: {[key: string]: any}): IConfigurationBuilder;
+	addObject(object: { [key: string]: any }): IConfigurationBuilder;
 
 	/**
 	 * Set root directory used to resolve file configurations.
 	 * @param rootDirectory
 	 */
 	setRootDirectory(rootDirectory: string): IConfigurationBuilder;
+
+	/**
+	 * Set provider which resolves values from configuration.
+	 * @param valueProvider
+	 */
+	setValueProvider(valueProvider: ConfigurationValueProvider): IConfigurationBuilder
 
 	/**
 	 * Build configuration.

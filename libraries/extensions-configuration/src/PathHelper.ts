@@ -11,7 +11,7 @@ export function combine(path: string, key: string)
 	{
 		return key;
 	}
-	
+
 	if (!key)
 	{
 		return path;

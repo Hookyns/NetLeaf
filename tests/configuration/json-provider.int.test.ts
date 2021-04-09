@@ -1,7 +1,8 @@
-import JsonConfigurationProvider from "../../libraries/extensions-configuration/src/providers/JsonConfigurationProvider";
-import * as path                 from "path";
+import * as path                   from "path";
+import ConfigurationBuilderContext from "../../libraries/extensions-configuration/src/ConfigurationBuilderContext";
+import JsonConfigurationProvider   from "../../libraries/extensions-configuration/src/providers/JsonConfigurationProvider";
 
-const configProvider = new JsonConfigurationProvider(path.join(__dirname, "files", "config.json"));
+const configProvider = new JsonConfigurationProvider(path.join(__dirname, "files", "config.json"), new ConfigurationBuilderContext());
 
 test("get() before load() throws", () => {
 	expect(() => configProvider.get("")).toThrow(/loaded/);
@@ -11,9 +12,9 @@ test("load() finish without error", () => {
 	expect(async () => await configProvider.load()).not.toThrow();
 });
 
-test("get() without key throws", async () => {
+test("get() without key returns whole configuration object", async () => {
 	await configProvider.load();
-	expect(() => configProvider.get("")).toThrow(/argument/i);
+	expect(Object.keys(configProvider.get(""))).toEqual(["foo", "bar"]);
 });
 
 test("get() not existing key return 'undefined'", async () => {

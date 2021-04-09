@@ -14,28 +14,26 @@ export default abstract class ConfigurationProviderBase implements IConfiguratio
 	 */
 	get(key: string): any
 	{
-		if (!key)
-		{
-			throw new Error("Argument 'key' cannot be falsy.");
-		}
-
 		if (!this.configuration)
 		{
 			return undefined;
 		}
 
+		if (!key)
+		{
+			return this.configuration;
+		}
+
 		const parts = key.split(KeySplitChar);
 		let prop = parts[0];
 		let obj = this.configuration[prop];
-		// let path = prop;
 		let partIndex = 0;
 
-		while (partIndex < parts.length -1 && obj != undefined)
+		while (partIndex < parts.length - 1 && obj != undefined)
 		{
 			partIndex++;
 			prop = parts[partIndex];
 			obj = obj[prop];
-			// path += KeySplitChar + prop;
 		}
 
 		return obj;
