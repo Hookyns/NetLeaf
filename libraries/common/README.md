@@ -1,3 +1,3 @@
 # @NetLeaf/common
 
-> Common library for NetLeaf application hosting framework.
+> Common library for NetLeaf application host framework.

@@ -1,5 +1,5 @@
 # @NetLeaf/extensions-file-provider
-> FileProvider extension for NetLeaf application hosting framework.
+> FileProvider extension for NetLeaf application host framework.
 
 ## Usage
 

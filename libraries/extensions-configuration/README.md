@@ -1,6 +1,6 @@
 # @NetLeaf/extensions-configuration
 
-> Configuration extension for NetLeaf application hosting framework.
+> Configuration extension for NetLeaf application host framework.
 
 ```typescript
 import { ConfigurationBuilder } from "@NetLeaf/extensions-configuration"

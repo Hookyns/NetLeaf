@@ -1,12 +1,9 @@
 import ConfigurationBuilderContext from "../../libraries/extensions-configuration/src/ConfigurationBuilderContext";
 import JsConfigurationProvider     from "../../libraries/extensions-configuration/src/providers/JsConfigurationProvider";
 import * as path                   from "path";
-import { PhysicalFileProvider }    from "../../libraries/extensions-file-provider/src/index";
 
 const context = new ConfigurationBuilderContext();
-context.properties[ConfigurationBuilderContext.FileProviderPropertyKey] = new PhysicalFileProvider(path.join(__dirname, "files"));
-
-const configProvider = new JsConfigurationProvider("config.js", context);
+const configProvider = new JsConfigurationProvider(path.join(__dirname, "files", "config.js"), context);
 
 // General tests
 test("get() before load() throws", () => {
@@ -34,7 +31,7 @@ test("get('foo') return correct value", async () => {
 
 test("get('bar.baz') return correct nested value", async () => {
 	await configProvider.load();
-	expect(configProvider.get("bar.baz")).toBe("Lipsum");
+	expect(configProvider.get("bar.baz")).toContain("Lipsum");
 });
 
 // Wrong config

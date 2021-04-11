@@ -1,8 +1,15 @@
-import ConfigurationValueProvider from "./ConfigurationValueProvider";
-import IRootConfiguration         from "./IRootConfiguration";
+import ConfigurationBuilderContext from "./ConfigurationBuilderContext";
+import ConfigurationValueProvider  from "./ConfigurationValueProvider";
+import IConfigurationProvider      from "./IConfigurationProvider";
+import IRootConfiguration          from "./IRootConfiguration";
 
 export default interface IConfigurationBuilder
-{
+{	
+	/**
+	 * Get configuration builder context.
+	 */
+	readonly context: ConfigurationBuilderContext;
+	
 	/**
 	 * Add an IConfigurationProvider that reads configuration from JSON file.
 	 * @param configPath
@@ -32,6 +39,12 @@ export default interface IConfigurationBuilder
 	 * @param object
 	 */
 	addObject(object: { [key: string]: any }): IConfigurationBuilder;
+
+	/**
+	 * Add the specified IConfigurationProvider instance.
+	 * @param provider
+	 */
+	addProvider(provider: IConfigurationProvider): IConfigurationBuilder;
 
 	/**
 	 * Set root directory used to resolve file configurations.

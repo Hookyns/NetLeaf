@@ -7,7 +7,7 @@
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
-        "declaration": false,
+        "declaration": true,
         "sourceMap": true,
         "allowJs": true,
         "allowSyntheticDefaultImports": true,
@@ -16,10 +16,11 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "baseUrl": ".",
-        "experimentalDecorators": true,
-        "removeComments": false
+        "outDir": "./dist",
+        "stripInternal": true,
+        "experimentalDecorators": true
     },
     "include": [
-        "**/*.ts"
+        "src/**/*.ts"
     ]
 }

@@ -1,6 +1,11 @@
 {
     "foo": "Lorem ipsum dolor sit amet",
     "bar": {
-        "baz": "Lipsum"
+        "baz": "Lipsum JSON",
+        "nested": {
+            "value": true,
+            "number": 5
+        },
+        "isJson": true
     }
 }

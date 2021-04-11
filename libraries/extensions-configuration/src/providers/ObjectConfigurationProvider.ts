@@ -21,6 +21,19 @@ export default class ObjectConfigurationProvider extends ConfigurationProviderBa
 	/**
 	 * @inheritDoc
 	 */
+	get(key: string): any
+	{
+		if (this.configuration === undefined)
+		{
+			throw new Error(`Object configuration has not been loaded yet.`);
+		}
+
+		return super.get(key);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	async load(): Promise<void>
 	{
 		if (this.#object.constructor != Object)

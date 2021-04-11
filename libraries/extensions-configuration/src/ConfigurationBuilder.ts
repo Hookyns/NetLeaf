@@ -31,7 +31,7 @@ export default class ConfigurationBuilder implements IConfigurationBuilder
 	 * @private
 	 */
 	#rootDirectory: string;
-	
+
 	/**
 	 * Configuration value provider instance.
 	 * @private
@@ -83,6 +83,15 @@ export default class ConfigurationBuilder implements IConfigurationBuilder
 	setValueProvider(valueProvider: ConfigurationValueProvider): IConfigurationBuilder
 	{
 		this.#configurationValueProvider = valueProvider || undefined;
+		return this;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	addProvider(provider: IConfigurationProvider): IConfigurationBuilder
+	{
+		this.#providers.push(provider);
 		return this;
 	}
 

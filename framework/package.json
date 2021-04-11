@@ -1,7 +1,7 @@
 {
     "name": "@netleaf/root",
     "version": "0.1.0",
-    "description": "Core package for NetLeaf application hosting framework.",
+    "description": "Core package for NetLeaf application host framework.",
     "main": "src/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"

@@ -65,7 +65,7 @@ export default class JsonConfigurationProvider extends ConfigurationProviderBase
 		}
 		else if (!path.isAbsolute(configurationPath))
 		{
-			throw new Error(`Unable to resolve path of JS configuration file '${configurationPath}'.`
+			throw new Error(`Unable to resolve path of JSON configuration file '${configurationPath}'.`
 				+ `Use absolute path or set FileProvider instance into ConfigurationBuilderContext properties with key '${ConfigurationBuilderContext.FileProviderPropertyKey}'.`);
 		}
 

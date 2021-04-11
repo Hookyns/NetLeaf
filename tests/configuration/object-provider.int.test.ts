@@ -1,11 +1,18 @@
-import * as path                   from "path";
-import ConfigurationBuilderContext from "../../libraries/extensions-configuration/src/ConfigurationBuilderContext";
-import JsonConfigurationProvider   from "../../libraries/extensions-configuration/src/providers/JsonConfigurationProvider";
+import ObjectConfigurationProvider   from "../../libraries/extensions-configuration/src/providers/ObjectConfigurationProvider";
 
-const configProvider = new JsonConfigurationProvider(path.join(__dirname, "files", "config.json"), new ConfigurationBuilderContext());
+const configProvider = new ObjectConfigurationProvider({
+	foo: "Lorem ipsum dolor sit amet",
+	bar: {
+		baz: "Lipsum JS",
+		nested: {
+			value: true,
+			number: 5
+		}
+	}
+});
 
 test("get() before load() throws", () => {
-	expect(() => configProvider.get("")).toThrow(/loaded/);
+	expect(() => new ObjectConfigurationProvider({}).get("")).toThrow(/loaded/);
 });
 
 test("load() finish without error", () => {

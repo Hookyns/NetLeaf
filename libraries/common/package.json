@@ -2,7 +2,7 @@
     "private": true,
     "name": "@netleaf/common",
     "version": "0.1.0",
-    "description": "Common library for NetLeaf application hosting framework.",
+    "description": "Common library for NetLeaf application host framework.",
     "main": "index.js",
     "types": "index.d.ts",
     "scripts": {
