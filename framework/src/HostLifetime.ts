@@ -2,6 +2,12 @@ import IHostLifetime from "./IHostLifetime";
 
 export default class HostLifetime implements IHostLifetime
 {
+	readonly #handlers = {
+		started: [],
+		stopping: [],
+		stopped: []
+	};
+	
 	/**
 	 * Construct HostLifetime
 	 */

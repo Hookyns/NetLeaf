@@ -9,7 +9,7 @@ export default interface ILogger
 	 * @param args
 	 * @param error
 	 */
-	log(level: LogLevel, message: string, args?: { [key: string]: any }, error?: Error);
+	log(level: LogLevel, message: string, args?: { [key: string]: any }, error?: Error): void;
 
 	/**
 	 * Write a critical log entry.
@@ -17,7 +17,7 @@ export default interface ILogger
 	 * @param args
 	 * @param error
 	 */
-	logCritical(message: string, args?: { [key: string]: any }, error?: Error);
+	logCritical(message: string, args?: { [key: string]: any }, error?: Error): void;
 
 	/**
 	 * Write an error log entry.
@@ -25,7 +25,7 @@ export default interface ILogger
 	 * @param args
 	 * @param error
 	 */
-	logError(message: string, args?: { [key: string]: any }, error?: Error);
+	logError(message: string, args?: { [key: string]: any }, error?: Error): void;
 
 	/**
 	 * Write a warning log entry.
@@ -33,7 +33,7 @@ export default interface ILogger
 	 * @param args
 	 * @param error
 	 */
-	logWarning(message: string, args?: { [key: string]: any }, error?: Error);
+	logWarning(message: string, args?: { [key: string]: any }, error?: Error): void;
 
 	/**
 	 * Write an information log entry.
@@ -41,7 +41,7 @@ export default interface ILogger
 	 * @param args
 	 * @param error
 	 */
-	logInformation(message: string, args?: { [key: string]: any }, error?: Error);
+	logInformation(message: string, args?: { [key: string]: any }, error?: Error): void;
 
 	/**
 	 * Write a debug log entry.
@@ -49,7 +49,7 @@ export default interface ILogger
 	 * @param args
 	 * @param error
 	 */
-	logDebug(message: string, args?: { [key: string]: any }, error?: Error);
+	logDebug(message: string, args?: { [key: string]: any }, error?: Error): void;
 
 	/**
 	 * Write a trace log entry.
@@ -57,5 +57,5 @@ export default interface ILogger
 	 * @param args
 	 * @param error
 	 */
-	logTrace(message: string, args?: { [key: string]: any }, error?: Error);
+	logTrace(message: string, args?: { [key: string]: any }, error?: Error): void;
 }
