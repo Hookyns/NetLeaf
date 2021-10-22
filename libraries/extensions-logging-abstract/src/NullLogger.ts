@@ -30,5 +30,4 @@ export default class NullLogger implements ILogger
 	logWarning(message: string, args?: { [p: string]: any }, error?: Error)
 	{
 	}
-
 }

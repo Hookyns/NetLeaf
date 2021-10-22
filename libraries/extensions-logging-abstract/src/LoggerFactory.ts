@@ -1,12 +1,12 @@
-import {reflectGeneric} from "tst-reflect"
+import {getType} from "tst-reflect"
 
 export default abstract class LoggerFactory
 {
 	/**
 	 * 
 	 * @param categoryName
+     * @reflectGeneric()
 	 */
-	@reflectGeneric()
 	createLogger<TCategory>(categoryName: string) {
 		
 	}

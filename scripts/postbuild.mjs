@@ -25,3 +25,6 @@ fs.writeFileSync(path.join(DistDir, "package.json"), JSON.stringify(packageJson)
 
 // Copy README to dist
 fs.copyFileSync(path.join(ProjectDir, "README.md"), path.join(DistDir, "README.md"));
+
+// Copy LICENSE to dist
+fs.copyFileSync(path.join(ProjectDir, "LICENSE"), path.join(DistDir, "LICENSE"));
