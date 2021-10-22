@@ -1,2 +1,2 @@
-export { IServiceCollection } from "./IServiceCollection";
-export { IServiceProvider }   from "./IServiceProvider";
+export { TypedServiceCollection } from "./TypedServiceCollection";
+export { TypedServiceProvider }   from "./TypedServiceProvider";

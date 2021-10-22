@@ -1,57 +1,95 @@
-export class TypedServiceProvider
+import {
+    Type,
+    getType
+} from "tst-reflect";
+import {
+    IServiceCollection,
+    IServiceProvider,
+    ServiceCollectionEntry
+} from "@netleaf/extensions-dependency-injection-abstract";
+
+export class TypedServiceProvider implements IServiceProvider
 {
     /**
-     * Get service instance
-     * @reflectGeneric
-     * @param type
+     * Service collection
      */
-    getServices<TDependency>(type?: Type): Iterable<TDependency>
+    private readonly _serviceCollection: IServiceCollection;
+
+    /**
+     * Create service provider on top of service collection.
+     * @param serviceCollection
+     */
+    constructor(serviceCollection: IServiceCollection)
+    {
+        this._serviceCollection = serviceCollection;
+    }
+
+    getServices<TService>(): Iterable<TService>;
+    getServices<TService>(type: Type): Iterable<TService>;
+    getServices<TService>(serviceIdentifier: string): Iterable<TService>;
+    getServices<TService>(type?: Type | string): Iterable<TService>
     {
         if (type === undefined)
         {
-            type = getType<TDependency>();
+            type = getType<TService>();
+
+            if (!type)
+            {
+                throw new Error("No service specified.");
+            }
         }
 
-        const implementations = Array.from(this._serviceCollection.services).find(([dependency]) => type.is(dependency))?.[1];
+        const serviceIdentifier: string = typeof type == "string" ? type : type.fullName;
+        const entry: ServiceCollectionEntry | undefined = Array.from(this._serviceCollection.services).find(entry => entry.serviceIdentifier == serviceIdentifier);
 
-        if (!implementations || !implementations.length)
+        if (!entry)
         {
-            throw new Error(`Type '${type.fullName}' is not registered.`);
+            throw new Error(`No service '${serviceIdentifier}' registered.`);
         }
 
         const self = this;
 
         return {
             [Symbol.iterator]: function* () {
-                let ctor, args;
-
-                for (let impl of implementations)
+                for (let descriptor of entry.descriptors)
                 {
-                    if (!impl.getConstructors()?.length)
+                    if (typeof descriptor.implementationFactory == "function")
                     {
-                        yield Reflect.construct(impl.ctor, []);
+                        // TODO: Use Lifetime scopes
+                        yield descriptor.implementationFactory(self);
                     }
-
-                    // Ctor with less parameters preferred
-                    ctor = impl.getConstructors()
-                        .sort((a, b) => a.parameters.length > b.parameters.length ? 1 : 0)[0];
-
-                    // Resolve parameters
-                    args = ctor.parameters.map(param => self.getService(param.type));
-
-                    yield Reflect.construct(impl.ctor, args);
+                    else
+                    {
+                        yield descriptor.implementationValue;
+                    }
                 }
             }
         };
     }
 
-    /**
-     * Get service instance.
-     * @reflectGeneric
-     * @param type
-     */
-    getService<TDependency>(type?: Type): TDependency | null
+    getService<TService>(): TService;
+    getService<TService>(type: Type): TService;
+    getService<TService>(serviceIdentifier: string): TService;
+    getService<TService>(type?: Type | string): TService
     {
-        return this.getServices(type ?? getType<TDependency>())[Symbol.iterator]().next().value || null;
+        if (type === undefined)
+        {
+            type = getType<TService>();
+
+            if (!type)
+            {
+                throw new Error("No service specified.");
+            }
+        }
+
+        const serviceIdentifier: string = typeof type == "string" ? type : type.fullName;
+        const service = this.getServices(serviceIdentifier)[Symbol.iterator]().next().value;
+
+        if (service === undefined)
+        {
+            throw new Error(`No service '${serviceIdentifier}' registered.`);
+        }
+        
+        return service;
     }
 }

@@ -119,6 +119,52 @@ export class TypedServiceCollection implements IServiceCollection
     }
 
     /**
+     * @param a
+     * @param b
+     * @param {Lifetime} lifetime
+     * @param {Type} TService
+     * @param {Type} TImplementation
+     * @private
+     */
+    private addServiceDescriptorFromArguments(a: any, b: any, lifetime: Lifetime, TService?: Type, TImplementation?: Type)
+    {
+        let serviceIdentifier: string;
+        let implementation: any = b;
+
+        // No arguments, use generic arguments
+        if (a === undefined)
+        {
+            const serviceType = TService;
+            const implementationType = TImplementation;
+
+            if (!serviceType) throw new Error("No service specified.");
+            if (!implementationType) throw new Error("No implementation specified.");
+
+            serviceIdentifier = serviceType.fullName;
+            implementation = implementationType;
+        }
+        // No second argument, use first generic argument as service and first argument as value
+        else if (b === undefined)
+        {
+            const serviceType = TService;
+            if (!serviceType) throw new Error("No service specified.");
+
+            serviceIdentifier = serviceType.fullName;
+            implementation = a;
+        }
+        // both arguments set
+        else
+        {
+            serviceIdentifier = Object.getPrototypeOf(implementation.constructor).name == "Type" ? a.fullName : a;
+            implementation = b;
+        }
+
+        this.addServiceDescriptor(
+            TypedServiceCollection.getServiceDescriptor(serviceIdentifier, implementation, Lifetime.Scoped)
+        );
+    }
+
+    /**
      * Add dependency into the collection.
      * @param entry
      */
@@ -157,33 +203,19 @@ export class TypedServiceCollection implements IServiceCollection
     addScoped(serviceType: Type, implementation: Type): IServiceCollection;
     addScoped(serviceType: Type, instance: any): IServiceCollection;
     addScoped(serviceType: Type, factory: ServiceFactory): IServiceCollection;
+    addScoped(serviceType: string, implementation: Type): IServiceCollection;
+    addScoped(serviceType: string, instance: any): IServiceCollection;
+    addScoped(serviceType: string, factory: ServiceFactory): IServiceCollection;
+    /**
+     * @reflectGeneric
+     * @param a
+     * @param b
+     * @return {IServiceCollection}
+     */
     addScoped<TService, TImplementation>(a?: any, b?: any): IServiceCollection
     {
-        // No arguments, use generic arguments
-        if (a === undefined)
-        {
-            const serviceType = getType<TService>();
-            const implementationType = getType<TImplementation>();
-
-            if (!serviceType) throw new Error("No service specified.");
-            if (!implementationType) throw new Error("No implementation specified.");
-
-            this.addServiceDescriptor({
-                serviceIdentifier: serviceType.fullName,
-                lifetime: Lifetime.Scoped,
-                implementationFactory: TypedServiceCollection.getTypeFactory(implementationType)
-            });
-        }
-        // No second argument, use first generic argument as service and first argument as value
-        else if (b === undefined)
-        {
-
-        }
-        // both arguments set
-        else
-        {
-
-        }
+        this.addServiceDescriptorFromArguments(a, b, Lifetime.Scoped, getType<TService>(), getType<TImplementation>());
+        return this;
     }
 
     addSingleton<TService, TImplementation>(): IServiceCollection;
@@ -192,9 +224,19 @@ export class TypedServiceCollection implements IServiceCollection
     addSingleton(serviceType: Type, implementation: Type): IServiceCollection;
     addSingleton(serviceType: Type, instance: any): IServiceCollection;
     addSingleton(serviceType: Type, factory: ServiceFactory): IServiceCollection;
-    addSingleton(instance?: any, implementation?: any): IServiceCollection
+    addSingleton(serviceType: string, implementation: Type): IServiceCollection;
+    addSingleton(serviceType: string, instance: any): IServiceCollection;
+    addSingleton(serviceType: string, factory: ServiceFactory): IServiceCollection;
+    /**
+     * @reflectGeneric
+     * @param a
+     * @param b
+     * @return {IServiceCollection}
+     */
+    addSingleton<TService, TImplementation>(a?: any, b?: any): IServiceCollection
     {
-        return undefined;
+        this.addServiceDescriptorFromArguments(a, b, Lifetime.Singleton, getType<TService>(), getType<TImplementation>());
+        return this;
     }
 
     addTransient<TService, TImplementation>(): IServiceCollection;
@@ -203,8 +245,53 @@ export class TypedServiceCollection implements IServiceCollection
     addTransient(serviceType: Type, implementation: Type): IServiceCollection;
     addTransient(serviceType: Type, instance: any): IServiceCollection;
     addTransient(serviceType: Type, factory: ServiceFactory): IServiceCollection;
-    addTransient(instance?: any, implementation?: any): IServiceCollection
+    addTransient(serviceType: string, implementation: Type): IServiceCollection;
+    addTransient(serviceType: string, instance: any): IServiceCollection;
+    addTransient(serviceType: string, factory: ServiceFactory): IServiceCollection;
+    /**
+     * @reflectGeneric
+     * @param a
+     * @param b
+     * @return {IServiceCollection}
+     */
+    addTransient<TService, TImplementation>(a?: any, b?: any): IServiceCollection
     {
-        return undefined;
+        this.addServiceDescriptorFromArguments(a, b, Lifetime.Transient, getType<TService>(), getType<TImplementation>());
+        return this;
+    }
+
+    /**
+     * Returns descriptor for given parameters.
+     * @param {string} serviceIdentifier
+     * @param implementation
+     * @param {Lifetime} lifetime
+     * @return {ServiceDescriptor}
+     * @private
+     */
+    private static getServiceDescriptor(serviceIdentifier: string, implementation: any, lifetime: Lifetime): ServiceDescriptor
+    {
+        if (Object.getPrototypeOf(implementation.constructor).name == "Type")
+        {
+            return {
+                serviceIdentifier: serviceIdentifier,
+                lifetime: lifetime,
+                implementationFactory: TypedServiceCollection.getTypeFactory(implementation)
+            };
+        }
+
+        if (typeof implementation == "function")
+        {
+            return {
+                serviceIdentifier: serviceIdentifier,
+                lifetime: lifetime,
+                implementationFactory: implementation
+            };
+        }
+
+        return {
+            serviceIdentifier: serviceIdentifier,
+            lifetime: lifetime,
+            implementationValue: implementation
+        };
     }
 }

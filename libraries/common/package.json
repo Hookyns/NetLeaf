@@ -15,7 +15,10 @@
         "common",
         "library"
     ],
-    "author": "Roman Jámbor",
+    "author": {
+        "name": "Roman Jámbor",
+        "email": "hookcze@gmail.com"
+    },
     "license": "MIT",
     "engines": {
         "node": ">=14"

@@ -1,0 +1,13 @@
+{
+    "private": true,
+    "main": "index.js",
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "tst-reflect-transformer": "^0.7.2"
+    },
+    "devDependencies": {
+        "typescript": "^4.4.4",
+        "ttypescript": "^1.5.12"
+    }
+}

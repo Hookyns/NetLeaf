@@ -17,9 +17,17 @@
         "baseUrl": ".",
         "outDir": "./dist",
         "stripInternal": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "plugins": [
+            {
+                "transform": "tst-reflect-transformer"
+            }
+        ]
     },
     "include": [
         "src/**/*.ts"
-    ]
+    ],
+    "reflection": {
+        "metadata": false
+    }
 }

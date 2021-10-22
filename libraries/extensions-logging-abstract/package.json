@@ -8,7 +8,9 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc && node ../../scripts/postbuild.mjs",
-        "publish": "npm run build && npm publish dist"
+        "publish": "exit 1",
+        "prepare": "npm run build",
+        "publish-dist": "npm run build && cd dist && npm publish && cd .."
     },
     "keywords": [
         "netleaf",
