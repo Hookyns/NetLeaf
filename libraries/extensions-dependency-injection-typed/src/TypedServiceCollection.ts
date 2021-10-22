@@ -75,9 +75,9 @@ export class TypedServiceCollection implements IServiceCollection
     private static resolveType(provider: IServiceProvider, impl: Type)
     {
         if (!impl.ctor) throw new Error(`Unable to construct type '${impl.fullName}'. Type contains no reference to the ctor.`);
-        
+
         const constructors = impl.getConstructors();
-        
+
         if (!constructors?.length)
         {
             return Reflect.construct(impl.ctor, []);
@@ -88,8 +88,20 @@ export class TypedServiceCollection implements IServiceCollection
 
         // Resolve parameters
         const args = constructor.parameters.map(param => {
-            const service = provider.getServices<any>(param.type)[Symbol.iterator]().next().value; // TODO: Check if some implementation even returned.
-            // IF no, check if it was required or no (optional argument).
+            const service = provider.getServices<any>(param.type)[Symbol.iterator]().next().value;
+
+            if (service === undefined)
+            {
+                if (param.optional)
+                {
+                    return undefined;
+                }
+
+                throw new Error(`Error while construction of type '${impl.fullName}'. Unable to resolve constructor parameter '${param.name}'.`
+                    + `Type of parameter '${param.type.fullName}' cannot be resolved and parameter is not optional.`);
+            }
+
+            return service;
         });
 
         return Reflect.construct(impl.ctor, args);
@@ -103,7 +115,7 @@ export class TypedServiceCollection implements IServiceCollection
      */
     private static getTypeFactory(implementation: Type): ServiceFactory
     {
-        return provider => TypedServiceCollection.resolveType<any>(provider, implementation);
+        return provider => TypedServiceCollection.resolveType(provider, implementation);
     }
 
     /**
