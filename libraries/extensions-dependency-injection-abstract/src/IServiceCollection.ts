@@ -64,6 +64,27 @@ export interface IServiceCollection
      */
     addTransient(serviceType: Type, factory: ServiceFactory): IServiceCollection;
 
+    /**
+     * Add transient dependency into the collection.
+     * @param serviceIdentifier
+     * @param implementation
+     */
+    addTransient(serviceIdentifier: string, implementation: Type): IServiceCollection;
+
+    /**
+     * Add transient dependency into the collection.
+     * @param serviceIdentifier
+     * @param instance
+     */
+    addTransient(serviceIdentifier: string, instance: any): IServiceCollection;
+
+    /**
+     * Add transient dependency into the collection.
+     * @param serviceIdentifier
+     * @param factory
+     */
+    addTransient(serviceIdentifier: string, factory: ServiceFactory): IServiceCollection;
+
 
     /**
      * Add scoped dependency into the collection.
@@ -106,6 +127,27 @@ export interface IServiceCollection
      */
     addScoped(serviceType: Type, factory: ServiceFactory): IServiceCollection;
 
+    /**
+     * Add scoped dependency into the collection.
+     * @param serviceIdentifier
+     * @param implementation
+     */
+    addScoped(serviceIdentifier: string, implementation: Type): IServiceCollection;
+
+    /**
+     * Add scoped dependency into the collection.
+     * @param serviceIdentifier
+     * @param instance
+     */
+    addScoped(serviceIdentifier: string, instance: any): IServiceCollection;
+
+    /**
+     * Add scoped dependency into the collection.
+     * @param serviceIdentifier
+     * @param factory
+     */
+    addScoped(serviceIdentifier: string, factory: ServiceFactory): IServiceCollection;
+
 
     /**
      * Add singleton dependency into the collection.
@@ -146,4 +188,25 @@ export interface IServiceCollection
      * @param factory
      */
     addSingleton(serviceType: Type, factory: ServiceFactory): IServiceCollection;
+
+    /**
+     * Add singleton dependency into the collection.
+     * @param serviceIdentifier
+     * @param implementation
+     */
+    addSingleton(serviceIdentifier: string, implementation: Type): IServiceCollection;
+
+    /**
+     * Add singleton dependency into the collection.
+     * @param serviceIdentifier
+     * @param instance
+     */
+    addSingleton(serviceIdentifier: string, instance: any): IServiceCollection;
+
+    /**
+     * Add singleton dependency into the collection.
+     * @param serviceIdentifier
+     * @param factory
+     */
+    addSingleton(serviceIdentifier: string, factory: ServiceFactory): IServiceCollection;
 }
