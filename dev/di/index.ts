@@ -15,6 +15,18 @@ interface ILog
 
 class Log implements ILog
 {
+    private log1 = true;
+    
+    log(...args: any[])
+    {
+        console.log.apply(undefined, args);
+    }
+}
+
+class Log2 implements ILog
+{
+    private log2 = true;
+    
     log(...args: any[])
     {
         console.log.apply(undefined, args);
@@ -44,6 +56,7 @@ class Service implements IService
 
 const serviceCollection: IServiceCollection = new TypedServiceCollection();
 serviceCollection.addTransient<ILog, Log>();
+serviceCollection.addTransient<ILog, Log2>();
 serviceCollection.addTransient<IService, Service>();
 serviceCollection.addSingleton("appport", 8080);
 
@@ -58,3 +71,8 @@ if (service)
 {
     service.doJob(Math.E);
 }
+
+console.log("All registered logs:", ...serviceProvider.getServices<ILog>());
+console.log("Only one major log:", serviceProvider.getService<ILog>());
+
+console.log("App port (registered value)", serviceProvider.getService("appport"));

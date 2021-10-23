@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES2019",
+        "sourceMap": true,
+		"experimentalDecorators": true,
+		"plugins": [
+            {
+                "transform": "tst-reflect-transformer"
+            }
+        ]
+    },
+    "reflection": {
+        "metadata": false,
+        "debugMode": true
+    }
+}

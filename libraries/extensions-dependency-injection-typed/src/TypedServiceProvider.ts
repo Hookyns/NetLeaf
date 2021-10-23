@@ -5,7 +5,8 @@ import {
 import {
     IServiceCollection,
     IServiceProvider,
-    ServiceCollectionEntry
+    ServiceCollectionEntry,
+    ServiceDescriptor
 } from "@netleaf/extensions-dependency-injection-abstract";
 
 export class TypedServiceProvider implements IServiceProvider
@@ -22,6 +23,9 @@ export class TypedServiceProvider implements IServiceProvider
     constructor(serviceCollection: IServiceCollection)
     {
         this._serviceCollection = serviceCollection;
+        
+        // Register this instance of service provider as IServiceProvider implementation for itself.
+        serviceCollection.addSingleton<IServiceProvider>(this);
     }
 
     getServices<TService>(): Iterable<TService>;
@@ -29,39 +33,14 @@ export class TypedServiceProvider implements IServiceProvider
     getServices<TService>(serviceIdentifier: string): Iterable<TService>;
     getServices<TService>(type?: Type | string): Iterable<TService>
     {
-        if (type === undefined)
-        {
-            type = getType<TService>();
-
-            if (!type)
-            {
-                throw new Error("No service specified.");
-            }
-        }
-
-        const serviceIdentifier: string = typeof type == "string" ? type : type.fullName;
-        const entry: ServiceCollectionEntry | undefined = Array.from(this._serviceCollection.services).find(entry => entry.serviceIdentifier == serviceIdentifier);
-
-        if (!entry)
-        {
-            throw new Error(`No service '${serviceIdentifier}' registered.`);
-        }
-
+        const entry: ServiceCollectionEntry = this.getEntry(type ?? getType<TService>())
         const self = this;
 
         return {
             [Symbol.iterator]: function* () {
                 for (let descriptor of entry.descriptors)
                 {
-                    if (typeof descriptor.implementationFactory == "function")
-                    {
-                        // TODO: Use Lifetime scopes
-                        yield descriptor.implementationFactory(self);
-                    }
-                    else
-                    {
-                        yield descriptor.implementationValue;
-                    }
+                    yield self.resolveDescriptor(descriptor);
                 }
             }
         };
@@ -72,24 +51,54 @@ export class TypedServiceProvider implements IServiceProvider
     getService<TService>(serviceIdentifier: string): TService;
     getService<TService>(type?: Type | string): TService
     {
-        if (type === undefined)
-        {
-            type = getType<TService>();
+        const entry: ServiceCollectionEntry = this.getEntry(type ?? getType<TService>());
+        
+        // Taking last descriptor (it overrides all implementations registered earlier).
+        const lastDescriptor = entry.descriptors[entry.descriptors.length - 1];
+        
+        return this.resolveDescriptor(lastDescriptor);
+    }
 
-            if (!type)
-            {
-                throw new Error("No service specified.");
-            }
+    /**
+     * Returns ServiceCollectionEntry for the service identification.
+     * @param {Type | string} type
+     * @return {ServiceCollectionEntry}
+     * @private
+     */
+    private getEntry(type?: Type | string): ServiceCollectionEntry 
+    {
+        if (!type)
+        {
+            throw new Error("No service specified.");
         }
 
         const serviceIdentifier: string = typeof type == "string" ? type : type.fullName;
-        const service = this.getServices(serviceIdentifier)[Symbol.iterator]().next().value;
+        const entry: ServiceCollectionEntry | undefined = Array.from(this._serviceCollection.services).find(entry => entry.serviceIdentifier == serviceIdentifier);
 
-        if (service === undefined)
+        if (!entry)
         {
             throw new Error(`No service '${serviceIdentifier}' registered.`);
         }
         
-        return service;
+        return entry;
+    }
+
+    /**
+     * Returns instance of service implementation.
+     * @param {ServiceDescriptor} descriptor
+     * @return {any}
+     * @private
+     */
+    private resolveDescriptor(descriptor: ServiceDescriptor): any
+    {
+        if (typeof descriptor.implementationFactory == "function")
+        {
+            // TODO: Use Lifetime scopes
+            return descriptor.implementationFactory(this);
+        }
+        else
+        {
+            return descriptor.implementationValue;
+        }
     }
 }

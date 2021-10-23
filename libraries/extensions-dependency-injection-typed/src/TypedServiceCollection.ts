@@ -88,7 +88,7 @@ export class TypedServiceCollection implements IServiceCollection
 
         // Resolve parameters
         const args = constructor.parameters.map(param => {
-            const service = provider.getServices<any>(param.type)[Symbol.iterator]().next().value;
+            const service = provider.getServices(param.type)[Symbol.iterator]().next().value;
 
             if (service === undefined)
             {
@@ -239,11 +239,40 @@ export class TypedServiceCollection implements IServiceCollection
         return this;
     }
 
+    /**
+     * Add transient dependency into the collection.
+     * @reflectGeneric
+     */
     addTransient<TService, TImplementation>(): IServiceCollection;
+    /**
+     * Add transient dependency into the collection.
+     * @reflectGeneric
+     * @param instance
+     */
     addTransient<TService>(instance: any): IServiceCollection;
+    /**
+     * Add transient dependency into the collection.
+     * @reflectGeneric
+     * @param factory
+     */
     addTransient<TService>(factory: ServiceFactory): IServiceCollection;
+    /**
+     * Add transient dependency into the collection.
+     * @param serviceType
+     * @param implementation
+     */
     addTransient(serviceType: Type, implementation: Type): IServiceCollection;
+    /**
+     * Add transient dependency into the collection.
+     * @param serviceType
+     * @param instance
+     */
     addTransient(serviceType: Type, instance: any): IServiceCollection;
+    /**
+     * Add transient dependency into the collection.
+     * @param serviceType
+     * @param factory
+     */
     addTransient(serviceType: Type, factory: ServiceFactory): IServiceCollection;
     addTransient(serviceType: string, implementation: Type): IServiceCollection;
     addTransient(serviceType: string, instance: any): IServiceCollection;
