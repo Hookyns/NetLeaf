@@ -1,6 +1,6 @@
 {
     "name": "@netleaf/extensions-dependency-injection-typed",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Dependency Injection extension for NetLeaf application host framework based on tst-reflect-transformer.",
     "main": "index.js",
     "types": "index.d.ts",
