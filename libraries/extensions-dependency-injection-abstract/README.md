@@ -1,4 +1,4 @@
-# @NetLeaf/dependency-injection-abstract
+# @netleaf/extensions-dependency-injection-abstract
 
 > Abstract Dependency Injection extension for NetLeaf application host framework.
 
