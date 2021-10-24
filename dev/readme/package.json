@@ -5,7 +5,7 @@
     "license": "MIT",
     "dependencies": {
         "@netleaf/extensions-dependency-injection-abstract": ">=0.4.1",
-        "@netleaf/extensions-dependency-injection-typed": "^0.1.0",
+        "@netleaf/extensions-dependency-injection-typed": ">=0.1.0",
         "tst-reflect-transformer": "^0.8.3"
     },
     "devDependencies": {

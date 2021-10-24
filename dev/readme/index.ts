@@ -1,5 +1,8 @@
-import { IServiceProvider }                             from "@netleaf/extensions-dependency-injection-abstract";
-import { TypedServiceCollection, TypedServiceProvider } from "@netleaf/extensions-dependency-injection-typed";
+import { IServiceProvider }       from "@netleaf/extensions-dependency-injection-abstract";
+import {
+    TypedServiceCollection,
+    TypedServiceProvider
+} from "@netleaf/extensions-dependency-injection-typed";
 
 interface ITextFormatter
 {
@@ -53,7 +56,16 @@ logger.info("Hello World!");
 logger.info(JSON.stringify(config));
 
 
-console.log(serviceProvider.getService("scopedId"));
-console.log(serviceProvider.getService("scopedId"));
+console.log(serviceProvider.getService("scopedId")); // > 1
+console.log(serviceProvider.getService("scopedId")); // > 1
 
-serviceProvider.createScope
+const scope1 = serviceProvider.createScope();
+console.log(scope1.serviceProvider.getService("scopedId")); // > 2
+console.log(scope1.serviceProvider.getService("scopedId")); // > 2
+
+const scope2 = serviceProvider.createScope();
+console.log(scope2.serviceProvider.getService("scopedId")); // > 3
+console.log(scope2.serviceProvider.getService("scopedId")); // > 3
+
+console.log(serviceProvider.getService("scopedId")); // > 1
+console.log(serviceProvider.getService("scopedId")); // > 1
