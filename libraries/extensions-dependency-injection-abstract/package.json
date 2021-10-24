@@ -1,6 +1,6 @@
 {
     "name": "@netleaf/extensions-dependency-injection-abstract",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "Abstract Dependency Injection extension for NetLeaf application host framework.",
     "main": "index.js",
     "types": "index.d.ts",
