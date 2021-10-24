@@ -4,10 +4,12 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "tst-reflect-transformer": "^0.8.1"
+        "@netleaf/extensions-dependency-injection-abstract": ">=0.4.1",
+        "@netleaf/extensions-dependency-injection-typed": "^0.1.0",
+        "tst-reflect-transformer": "^0.8.3"
     },
     "devDependencies": {
-        "typescript": "^4.4.4",
-        "ttypescript": "^1.5.12"
+        "ttypescript": "^1.5.12",
+        "typescript": "^4.4.4"
     }
 }

@@ -1,47 +1,59 @@
-import {
-    IServiceCollection,
-    IServiceProvider
-} from "../../libraries/extensions-dependency-injection-abstract/dist";
-import {
-    TypedServiceCollection,
-    TypedServiceProvider
-}                             from "../../libraries/extensions-dependency-injection-typed/dist";
+import { IServiceProvider }                             from "@netleaf/extensions-dependency-injection-abstract";
+import { TypedServiceCollection, TypedServiceProvider } from "@netleaf/extensions-dependency-injection-typed";
 
-interface ITextFormatter {
+interface ITextFormatter
+{
     format(text: string);
 }
 
-class SpaceColorFormatter implements ITextFormatter {
-    format(text: string) {
-        // ...
-        return text;
+class SpaceColorFormatter implements ITextFormatter
+{
+    format(text: string)
+    {
+        return "> " + text;
     }
 }
 
-interface ILogger {
+interface ILogger
+{
     info(message: string);
 }
 
-class ConsoleLogger implements ILogger {
-    constructor(private console: Console, private formatter: ITextFormatter) {}
+class ConsoleLogger implements ILogger
+{
+    private readonly console: Console;
 
-    info(message: string) {
+    constructor(private formatter: ITextFormatter, serviceProvider: IServiceProvider)
+    {
+        this.console = serviceProvider.getService("console");
+    }
+
+    info(message: string)
+    {
         this.console.info(this.formatter.format(message));
     }
 }
 
-const serviceCollection: IServiceCollection = new TypedServiceCollection();
+const serviceCollection = new TypedServiceCollection();
 
+let scopedId = 0;
+serviceCollection.addScoped("scopedId", provider => ++scopedId);
 serviceCollection.addTransient<ILogger, ConsoleLogger>();
 serviceCollection.addSingleton<ITextFormatter, SpaceColorFormatter>();
-// serviceCollection.addScoped<ICache, MemoryCache>();
 
-serviceCollection.addSingleton<Console>(console);
-serviceCollection.addSingleton("SomeStringIdentifier", { someObject: { eg: "config" } });
+serviceCollection.addSingleton("console", console);
+serviceCollection.addSingleton("app.config", { someObject: { eg: "config" } });
 
-const serviceProvider: IServiceProvider = new TypedServiceProvider(serviceCollection);
+const serviceProvider = new TypedServiceProvider(serviceCollection);
 
 const logger: ILogger = serviceProvider.getService<ILogger>();
-logger.info("Hello World!");
+const config = serviceProvider.getService("app.config");
 
-console.log(serviceProvider.getService("SomeStringIdentifier")); // > { someObject: { eg: "config" } }
+logger.info("Hello World!");
+logger.info(JSON.stringify(config));
+
+
+console.log(serviceProvider.getService("scopedId"));
+console.log(serviceProvider.getService("scopedId"));
+
+serviceProvider.createScope
