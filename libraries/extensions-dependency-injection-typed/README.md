@@ -43,6 +43,7 @@ and with Webpack
 
 
 ## Usage
+[![Run on repl.it](https://repl.it/badge/github/Hookyns/extensions-dependency-injection-typed)](https://replit.com/@Hookyns/extensions-dependency-injection-typed#src/index.ts)
 
 First lets have some services (interfaces and classes):
 ```typescript

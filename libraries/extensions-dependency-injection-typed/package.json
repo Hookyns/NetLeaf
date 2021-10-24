@@ -20,7 +20,7 @@
         "node": ">=14"
     },
     "dependencies": {
-        "@netleaf/extensions-dependency-injection-abstract": ">=0.4.1"
+        "@netleaf/extensions-dependency-injection-abstract": ">=0.4.2"
     },
     "devDependencies": {
         "@types/node": "^14.17.28",
