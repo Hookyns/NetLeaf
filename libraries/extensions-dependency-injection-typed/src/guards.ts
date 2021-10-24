@@ -34,5 +34,5 @@ export function isServiceCollectionEntry(obj: any): obj is ServiceCollectionEntr
  */
 export function isIServiceCollection(obj: any): obj is IServiceCollection
 {
-    return obj && obj.hasOwnProperty("services");
+    return obj && obj.services && obj.add && obj.addTransient && obj.addScoped && obj.addSingleton;
 }

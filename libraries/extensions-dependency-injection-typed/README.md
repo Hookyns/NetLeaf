@@ -75,3 +75,55 @@ Output:
 > Hello World!
 > {"someObject":{"eg":"config"}}
 ```
+
+## Lifetimes
+Services can be registered with one of the following lifetimes:
+- transient,
+- scoped,
+- singleton.
+
+### Transient
+Services registered with `transient` lifetime are created each time they're requested from the service provider. 
+This lifetime works best for lightweight, stateless services.
+
+Register transient services with `addTransient()`.
+
+### Scoped
+Services registered with `scoped` lifetime are created only once per scope. It is similar to a singleton inside one scope.
+
+Register transient services with `addScoped()`.
+
+Create new scope with `serviceProvider.createScope()`;
+
+**Example**
+```typescript
+// Create service collection
+const serviceCollection = new TypedServiceCollection();
+
+// Add "service" into the collection
+let scopedId = 0;
+serviceCollection.addScoped("scopedId", provider => ++scopedId);
+
+const serviceProvider = new TypedServiceProvider(serviceCollection);
+
+console.log(serviceProvider.getService("scopedId")); // > 1
+console.log(serviceProvider.getService("scopedId")); // > 1
+
+const scope1 = serviceProvider.createScope();
+console.log(scope1.serviceProvider.getService("scopedId")); // > 2
+console.log(scope1.serviceProvider.getService("scopedId")); // > 2
+
+const scope2 = serviceProvider.createScope();
+console.log(scope2.serviceProvider.getService("scopedId")); // > 3
+console.log(scope2.serviceProvider.getService("scopedId")); // > 3
+
+console.log(serviceProvider.getService("scopedId")); // > 1
+console.log(serviceProvider.getService("scopedId")); // > 1
+```
+
+### Singleton
+Services registered with `scoped` lifetime are created only once. 
+Single instance is used for whole application. 
+Same instance is returned each time it is requested from the service provider, through all scopes.
+
+Register transient services with `addSingleton()`.
