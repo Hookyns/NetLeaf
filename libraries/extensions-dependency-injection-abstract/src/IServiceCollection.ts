@@ -109,6 +109,7 @@ export interface IServiceCollection
 
     /**
      * Add singleton dependency into the collection.
+     * @reflectGeneric
      */
     addSingleton<TService, TImplementation>(): IServiceCollection;
 
