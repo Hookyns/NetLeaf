@@ -1,4 +1,5 @@
-import { Type } from "tst-reflect";
+import { Type }          from "tst-reflect";
+import { IServiceScope } from "./IServiceScope";
 
 export interface IServiceProvider
 {
@@ -38,4 +39,10 @@ export interface IServiceProvider
      * @param serviceIdentifier
      */
     getService<TService>(serviceIdentifier: string): TService;
+
+    /**
+     * Creates new service scope.
+     * @return {IServiceScope}
+     */
+    createScope(): IServiceScope;
 }
