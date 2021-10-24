@@ -2,7 +2,8 @@
 
 > Dependency Injection extension for NetLeaf application host framework based on `tst-reflection-transformer` and inspired by .NET.
 
-*To proper use of this package, you need [ttypescript](https://github.com/cevek/ttypescript) and [tst-reflect](https://github.com/Hookyns/ts-reflection). Watch `tst-reflect` respository for more information.*
+*To proper use of this package, you need [ttypescript](https://github.com/cevek/ttypescript) and [tst-reflect](https://github.com/Hookyns/ts-reflection). 
+Watch `tst-reflect` repository for more information.*
 
 ## Usage
 
