@@ -2,14 +2,14 @@ import {
     IServiceCollection,
     IServiceProvider,
     IServiceScope,
+    Lifetime,
     ServiceCollectionEntry,
     ServiceDescriptor
-}                                 from "@netleaf/extensions-dependency-injection-abstract";
+} from "@netleaf/extensions-dependency-injection-abstract";
 import {
     getType,
     Type
 }                                 from "tst-reflect";
-import { Lifetime }               from "../../extensions-dependency-injection-abstract/src";
 import { isServiceDescriptor }    from "./guards";
 import { ServiceScope }           from "./ServiceScope";
 import { TypedServiceCollection } from "./TypedServiceCollection";

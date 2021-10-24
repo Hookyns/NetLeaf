@@ -1,8 +1,8 @@
 import {
     IServiceProvider,
-    IServiceScope
-}                            from "@netleaf/extensions-dependency-injection-abstract";
-import { ServiceDescriptor } from "../../extensions-dependency-injection-abstract/src";
+    IServiceScope,
+    ServiceDescriptor
+} from "@netleaf/extensions-dependency-injection-abstract";
 
 export class ServiceScope implements IServiceScope
 {
