@@ -32,13 +32,6 @@ export interface IServiceCollection
     /**
      * Add transient dependency into the collection.
      * @reflectGeneric
-     * @param instance
-     */
-    addTransient<TService>(instance: any): IServiceCollection;
-
-    /**
-     * Add transient dependency into the collection.
-     * @reflectGeneric
      * @param factory
      */
     addTransient<TService>(factory: ServiceFactory): IServiceCollection;
@@ -49,13 +42,6 @@ export interface IServiceCollection
      * @param implementation
      */
     addTransient(serviceType: Type, implementation: Type): IServiceCollection;
-
-    /**
-     * Add transient dependency into the collection.
-     * @param serviceType
-     * @param instance
-     */
-    addTransient(serviceType: Type, instance: any): IServiceCollection;
 
     /**
      * Add transient dependency into the collection.
@@ -74,13 +60,6 @@ export interface IServiceCollection
     /**
      * Add transient dependency into the collection.
      * @param serviceIdentifier
-     * @param instance
-     */
-    addTransient(serviceIdentifier: string, instance: any): IServiceCollection;
-
-    /**
-     * Add transient dependency into the collection.
-     * @param serviceIdentifier
      * @param factory
      */
     addTransient(serviceIdentifier: string, factory: ServiceFactory): IServiceCollection;
@@ -91,13 +70,6 @@ export interface IServiceCollection
      * @reflectGeneric
      */
     addScoped<TService, TImplementation>(): IServiceCollection;
-
-    /**
-     * Add scoped dependency into the collection.
-     * @reflectGeneric
-     * @param instance
-     */
-    addScoped<TService>(instance: any): IServiceCollection;
 
     /**
      * Add scoped dependency into the collection.
@@ -116,13 +88,6 @@ export interface IServiceCollection
     /**
      * Add scoped dependency into the collection.
      * @param serviceType
-     * @param instance
-     */
-    addScoped(serviceType: Type, instance: any): IServiceCollection;
-
-    /**
-     * Add scoped dependency into the collection.
-     * @param serviceType
      * @param factory
      */
     addScoped(serviceType: Type, factory: ServiceFactory): IServiceCollection;
@@ -133,13 +98,6 @@ export interface IServiceCollection
      * @param implementation
      */
     addScoped(serviceIdentifier: string, implementation: Type): IServiceCollection;
-
-    /**
-     * Add scoped dependency into the collection.
-     * @param serviceIdentifier
-     * @param instance
-     */
-    addScoped(serviceIdentifier: string, instance: any): IServiceCollection;
 
     /**
      * Add scoped dependency into the collection.
