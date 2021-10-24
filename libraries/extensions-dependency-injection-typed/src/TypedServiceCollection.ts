@@ -5,11 +5,16 @@ import {
     ServiceCollectionEntry,
     ServiceDescriptor,
     ServiceFactory
-} from "@netleaf/extensions-dependency-injection-abstract";
+}                              from "@netleaf/extensions-dependency-injection-abstract";
 import {
     getType,
     Type
-} from "tst-reflect";
+}                              from "tst-reflect";
+import {
+    isIServiceCollection,
+    isServiceCollectionEntry,
+    isServiceDescriptor
+} from "./guards";
 
 /**
  * Service collection working with Type instances. Based on tst-reflect-transformer.
@@ -29,41 +34,188 @@ export class TypedServiceCollection implements IServiceCollection
         return this._services.values();
     }
 
-    private static isServiceDescriptor(obj: any): obj is ServiceDescriptor
+    /**
+     * Add dependency into the collection.
+     * @param entry
+     */
+    public add(entry: ServiceDescriptor | ServiceCollectionEntry): IServiceCollection;
+    /**
+     * Add dependencies from another collection.
+     * @param collection
+     */
+    public add(collection: IServiceCollection): IServiceCollection;
+    public add(entry: ServiceDescriptor | ServiceCollectionEntry | IServiceCollection): IServiceCollection
     {
-        return obj && obj.hasOwnProperty("serviceIdentifier") && obj.hasOwnProperty("lifetime");
-    }
+        if (isServiceDescriptor(entry))
+        {
+            this.addServiceDescriptor(entry);
+        }
+        else if (isServiceCollectionEntry(entry))
+        {
+            for (let descriptor of entry.descriptors)
+            {
+                this.addServiceDescriptor(descriptor);
+            }
+        }
+        else if (isIServiceCollection(entry))
+        {
+            for (let collection of entry.services)
+            {
+                for (let descriptor of collection.descriptors)
+                {
+                    this.addServiceDescriptor(descriptor);
+                }
+            }
+        }
 
-    private static isServiceCollectionEntry(obj: any): obj is ServiceCollectionEntry
-    {
-        return obj && obj.hasOwnProperty("serviceIdentifier") && obj.hasOwnProperty("descriptors");
-    }
-
-    private static isIServiceCollection(obj: any): obj is IServiceCollection
-    {
-        return obj && obj.hasOwnProperty("services");
+        return this;
     }
 
     /**
-     * Adds ServiceDescriptor into the collection.
-     * @param {ServiceDescriptor} descriptor
-     * @private
+     * Add scoped dependency into the collection.
+     * @reflectGeneric
      */
-    private addServiceDescriptor(descriptor: ServiceDescriptor)
+    public addScoped<TService, TImplementation>(): IServiceCollection;
+    /**
+     * Add scoped dependency into the collection.
+     * @reflectGeneric
+     * @param factory
+     */
+    public addScoped<TService>(factory: ServiceFactory): IServiceCollection;
+    /**
+     * Add scoped dependency into the collection.
+     * @param serviceType
+     * @param implementation
+     */
+    public addScoped(serviceType: Type, implementation: Type): IServiceCollection;
+    /**
+     * Add scoped dependency into the collection.
+     * @param serviceType
+     * @param factory
+     */
+    public addScoped(serviceType: Type, factory: ServiceFactory): IServiceCollection;
+    /**
+     * Add scoped dependency into the collection.
+     * @param serviceIdentifier
+     * @param implementation
+     */
+    public addScoped(serviceIdentifier: string, implementation: Type): IServiceCollection;
+    /**
+     * Add scoped dependency into the collection.
+     * @param serviceIdentifier
+     * @param factory
+     */
+    public addScoped(serviceIdentifier: string, factory: ServiceFactory): IServiceCollection;
+    public addScoped<TService, TImplementation>(a?: any, b?: any): IServiceCollection
     {
-        let entry: ServiceCollectionEntry | undefined = this._services.get(descriptor.serviceIdentifier);
+        this.addServiceDescriptorFromArguments(a, b, Lifetime.Scoped, getType<TService>(), getType<TImplementation>());
+        return this;
+    }
 
-        if (!entry)
-        {
-            entry = {
-                serviceIdentifier: descriptor.serviceIdentifier,
-                descriptors: []
-            };
+    /**
+     * Add singleton dependency into the collection.
+     * @reflectGeneric
+     */
+    public addSingleton<TService, TImplementation>(): IServiceCollection;
+    /**
+     * Add singleton dependency into the collection.
+     * @reflectGeneric
+     * @param instance
+     */
+    public addSingleton<TService>(instance: any): IServiceCollection;
+    /**
+     * Add singleton dependency into the collection.
+     * @reflectGeneric
+     * @param factory
+     */
+    public addSingleton<TService>(factory: ServiceFactory): IServiceCollection;
+    /**
+     * Add singleton dependency into the collection.
+     * @param serviceType
+     * @param implementation
+     */
+    public addSingleton(serviceType: Type, implementation: Type): IServiceCollection;
+    /**
+     * Add singleton dependency into the collection.
+     * @param serviceType
+     * @param instance
+     */
+    public addSingleton(serviceType: Type, instance: any): IServiceCollection;
+    /**
+     * Add singleton dependency into the collection.
+     * @param serviceType
+     * @param factory
+     */
+    public addSingleton(serviceType: Type, factory: ServiceFactory): IServiceCollection;
+    /**
+     * Add singleton dependency into the collection.
+     * @param serviceType
+     * @param implementation
+     */
+    public addSingleton(serviceType: string, implementation: Type): IServiceCollection;
+    /**
+     * Add singleton dependency into the collection.
+     * @param serviceType
+     * @param instance
+     */
+    public addSingleton(serviceType: string, instance: any): IServiceCollection;
+    /**
+     * Add singleton dependency into the collection.
+     * @param serviceType
+     * @param factory
+     */
+    public addSingleton(serviceType: string, factory: ServiceFactory): IServiceCollection;
+    /**
+     * @reflectGeneric
+     * @param a
+     * @param b
+     * @return {IServiceCollection}
+     */
+    public addSingleton<TService, TImplementation>(a?: any, b?: any): IServiceCollection
+    {
+        this.addServiceDescriptorFromArguments(a, b, Lifetime.Singleton, getType<TService>(), getType<TImplementation>());
+        return this;
+    }
 
-            this._services.set(descriptor.serviceIdentifier, entry);
-        }
-
-        entry.descriptors.push(descriptor);
+    /**
+     * Add transient dependency into the collection.
+     * @reflectGeneric
+     */
+    public addTransient<TService, TImplementation>(): IServiceCollection;
+    /**
+     * Add transient dependency into the collection.
+     * @reflectGeneric
+     * @param factory
+     */
+    public addTransient<TService>(factory: ServiceFactory): IServiceCollection;
+    /**
+     * Add transient dependency into the collection.
+     * @param serviceType
+     * @param implementation
+     */
+    public addTransient(serviceType: Type, implementation: Type): IServiceCollection;
+    /**
+     * Add transient dependency into the collection.
+     * @param serviceType
+     * @param factory
+     */
+    public addTransient(serviceType: Type, factory: ServiceFactory): IServiceCollection;
+    /**
+     * Add transient dependency into the collection.
+     * @param serviceType
+     * @param implementation
+     */
+    public addTransient(serviceType: string, implementation: Type): IServiceCollection;
+    /**
+     * Add transient dependency into the collection.
+     * @param serviceType
+     * @param factory
+     */
+    public addTransient(serviceType: string, factory: ServiceFactory): IServiceCollection;
+    public addTransient<TService, TImplementation>(a?: any, b?: any): IServiceCollection
+    {
+        this.addServiceDescriptorFromArguments(a, b, Lifetime.Transient, getType<TService>(), getType<TImplementation>());
+        return this;
     }
 
     /**
@@ -119,6 +271,63 @@ export class TypedServiceCollection implements IServiceCollection
     }
 
     /**
+     * Returns descriptor for given parameters.
+     * @param {string} serviceIdentifier
+     * @param implementation
+     * @param {Lifetime} lifetime
+     * @return {ServiceDescriptor}
+     * @private
+     */
+    private static getServiceDescriptor(serviceIdentifier: string, implementation: any, lifetime: Lifetime): ServiceDescriptor
+    {
+        if (Object.getPrototypeOf(implementation.constructor).name == "Type")
+        {
+            return {
+                serviceIdentifier: serviceIdentifier,
+                lifetime: lifetime,
+                implementationFactory: TypedServiceCollection.getTypeFactory(implementation)
+            };
+        }
+
+        if (typeof implementation == "function")
+        {
+            return {
+                serviceIdentifier: serviceIdentifier,
+                lifetime: lifetime,
+                implementationFactory: implementation
+            };
+        }
+
+        return {
+            serviceIdentifier: serviceIdentifier,
+            lifetime: lifetime,
+            implementationValue: implementation
+        };
+    }
+
+    /**
+     * Adds ServiceDescriptor into the collection.
+     * @param {ServiceDescriptor} descriptor
+     * @private
+     */
+    private addServiceDescriptor(descriptor: ServiceDescriptor)
+    {
+        let entry: ServiceCollectionEntry | undefined = this._services.get(descriptor.serviceIdentifier);
+
+        if (!entry)
+        {
+            entry = {
+                serviceIdentifier: descriptor.serviceIdentifier,
+                descriptors: []
+            };
+
+            this._services.set(descriptor.serviceIdentifier, entry);
+        }
+
+        entry.descriptors.push(descriptor);
+    }
+
+    /**
      * @param a
      * @param b
      * @param {Lifetime} lifetime
@@ -162,165 +371,5 @@ export class TypedServiceCollection implements IServiceCollection
         this.addServiceDescriptor(
             TypedServiceCollection.getServiceDescriptor(serviceIdentifier, implementation, Lifetime.Scoped)
         );
-    }
-
-    /**
-     * Add dependency into the collection.
-     * @param entry
-     */
-    add(entry: ServiceDescriptor | ServiceCollectionEntry): IServiceCollection;
-    add(collection: IServiceCollection): IServiceCollection;
-    add(entry: ServiceDescriptor | ServiceCollectionEntry | IServiceCollection): IServiceCollection
-    {
-        if (TypedServiceCollection.isServiceDescriptor(entry))
-        {
-            this.addServiceDescriptor(entry);
-        }
-        else if (TypedServiceCollection.isServiceCollectionEntry(entry))
-        {
-            for (let descriptor of entry.descriptors)
-            {
-                this.addServiceDescriptor(descriptor);
-            }
-        }
-        else if (TypedServiceCollection.isIServiceCollection(entry))
-        {
-            for (let collection of entry.services)
-            {
-                for (let descriptor of collection.descriptors)
-                {
-                    this.addServiceDescriptor(descriptor);
-                }
-            }
-        }
-
-        return this;
-    }
-
-    addScoped<TService, TImplementation>(): IServiceCollection;
-    addScoped<TService>(instance: any): IServiceCollection;
-    addScoped<TService>(factory: ServiceFactory): IServiceCollection;
-    addScoped(serviceType: Type, implementation: Type): IServiceCollection;
-    addScoped(serviceType: Type, instance: any): IServiceCollection;
-    addScoped(serviceType: Type, factory: ServiceFactory): IServiceCollection;
-    addScoped(serviceType: string, implementation: Type): IServiceCollection;
-    addScoped(serviceType: string, instance: any): IServiceCollection;
-    addScoped(serviceType: string, factory: ServiceFactory): IServiceCollection;
-    /**
-     * @reflectGeneric
-     * @param a
-     * @param b
-     * @return {IServiceCollection}
-     */
-    addScoped<TService, TImplementation>(a?: any, b?: any): IServiceCollection
-    {
-        this.addServiceDescriptorFromArguments(a, b, Lifetime.Scoped, getType<TService>(), getType<TImplementation>());
-        return this;
-    }
-
-    addSingleton<TService, TImplementation>(): IServiceCollection;
-    addSingleton<TService>(instance: any): IServiceCollection;
-    addSingleton<TService>(factory: ServiceFactory): IServiceCollection;
-    addSingleton(serviceType: Type, implementation: Type): IServiceCollection;
-    addSingleton(serviceType: Type, instance: any): IServiceCollection;
-    addSingleton(serviceType: Type, factory: ServiceFactory): IServiceCollection;
-    addSingleton(serviceType: string, implementation: Type): IServiceCollection;
-    addSingleton(serviceType: string, instance: any): IServiceCollection;
-    addSingleton(serviceType: string, factory: ServiceFactory): IServiceCollection;
-    /**
-     * @reflectGeneric
-     * @param a
-     * @param b
-     * @return {IServiceCollection}
-     */
-    addSingleton<TService, TImplementation>(a?: any, b?: any): IServiceCollection
-    {
-        this.addServiceDescriptorFromArguments(a, b, Lifetime.Singleton, getType<TService>(), getType<TImplementation>());
-        return this;
-    }
-
-    /**
-     * Add transient dependency into the collection.
-     * @reflectGeneric
-     */
-    addTransient<TService, TImplementation>(): IServiceCollection;
-    /**
-     * Add transient dependency into the collection.
-     * @reflectGeneric
-     * @param instance
-     */
-    addTransient<TService>(instance: any): IServiceCollection;
-    /**
-     * Add transient dependency into the collection.
-     * @reflectGeneric
-     * @param factory
-     */
-    addTransient<TService>(factory: ServiceFactory): IServiceCollection;
-    /**
-     * Add transient dependency into the collection.
-     * @param serviceType
-     * @param implementation
-     */
-    addTransient(serviceType: Type, implementation: Type): IServiceCollection;
-    /**
-     * Add transient dependency into the collection.
-     * @param serviceType
-     * @param instance
-     */
-    addTransient(serviceType: Type, instance: any): IServiceCollection;
-    /**
-     * Add transient dependency into the collection.
-     * @param serviceType
-     * @param factory
-     */
-    addTransient(serviceType: Type, factory: ServiceFactory): IServiceCollection;
-    addTransient(serviceType: string, implementation: Type): IServiceCollection;
-    addTransient(serviceType: string, instance: any): IServiceCollection;
-    addTransient(serviceType: string, factory: ServiceFactory): IServiceCollection;
-    /**
-     * @reflectGeneric
-     * @param a
-     * @param b
-     * @return {IServiceCollection}
-     */
-    addTransient<TService, TImplementation>(a?: any, b?: any): IServiceCollection
-    {
-        this.addServiceDescriptorFromArguments(a, b, Lifetime.Transient, getType<TService>(), getType<TImplementation>());
-        return this;
-    }
-
-    /**
-     * Returns descriptor for given parameters.
-     * @param {string} serviceIdentifier
-     * @param implementation
-     * @param {Lifetime} lifetime
-     * @return {ServiceDescriptor}
-     * @private
-     */
-    private static getServiceDescriptor(serviceIdentifier: string, implementation: any, lifetime: Lifetime): ServiceDescriptor
-    {
-        if (Object.getPrototypeOf(implementation.constructor).name == "Type")
-        {
-            return {
-                serviceIdentifier: serviceIdentifier,
-                lifetime: lifetime,
-                implementationFactory: TypedServiceCollection.getTypeFactory(implementation)
-            };
-        }
-
-        if (typeof implementation == "function")
-        {
-            return {
-                serviceIdentifier: serviceIdentifier,
-                lifetime: lifetime,
-                implementationFactory: implementation
-            };
-        }
-
-        return {
-            serviceIdentifier: serviceIdentifier,
-            lifetime: lifetime,
-            implementationValue: implementation
-        };
     }
 }
