@@ -1,4 +1,4 @@
-export default interface IConfigurationProvider
+export interface IConfigurationProvider
 {
 	/**
 	 * Get a configuration value for the specified key.

@@ -1,6 +1,6 @@
-import ConfigurationProviderBase from "./ConfigurationProviderBase";
+import { ConfigurationProviderBase } from "./ConfigurationProviderBase";
 
-export default class ObjectConfigurationProvider extends ConfigurationProviderBase
+export class ObjectConfigurationProvider extends ConfigurationProviderBase
 {
 	/**
 	 * Source object with configuration.

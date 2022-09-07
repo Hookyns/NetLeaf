@@ -1,11 +1,11 @@
-import ErrorWrap                   from "@netleaf/common/src/errors/ErrorWrap";
-import { readFile }                from "fs/promises";
-import { parse }                   from "json5";
-import * as path                   from "path";
-import ConfigurationBuilderContext from "../ConfigurationBuilderContext";
-import ConfigurationProviderBase   from "./ConfigurationProviderBase";
+import ErrorWrap                       from "@netleaf/common/src/errors/ErrorWrap";
+import { readFile }                    from "fs/promises";
+import { parse }                       from "json5";
+import * as path                       from "path";
+import { ConfigurationBuilderContext } from "../ConfigurationBuilderContext";
+import { ConfigurationProviderBase }   from "./ConfigurationProviderBase";
 
-export default class JsonConfigurationProvider extends ConfigurationProviderBase
+export class JsonConfigurationProvider extends ConfigurationProviderBase
 {
 	/**
 	 * Path to configuration file

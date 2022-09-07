@@ -1,8 +1,8 @@
-import ErrorWrap                 from "@netleaf/common/src/errors/ErrorWrap";
-import * as minimist             from "minimist";
-import ConfigurationProviderBase from "./ConfigurationProviderBase";
+import ErrorWrap                     from "@netleaf/common/src/errors/ErrorWrap";
+import * as minimist                 from "minimist";
+import { ConfigurationProviderBase } from "./ConfigurationProviderBase";
 
-export default class ConsoleConfigurationProvider extends ConfigurationProviderBase
+export class ConsoleConfigurationProvider extends ConfigurationProviderBase
 {
 	/**
 	 * Args from command line.

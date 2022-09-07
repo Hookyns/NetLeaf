@@ -1,9 +1,9 @@
-import IConfiguration        from "./IConfiguration";
-import IConfigurationSection from "./IConfigurationSection";
-import IRootConfiguration    from "./IRootConfiguration";
-import * as PathHelper       from "./PathHelper";
+import { IConfiguration }        from "./IConfiguration";
+import { IConfigurationSection } from "./IConfigurationSection";
+import { IRootConfiguration }    from "./IRootConfiguration";
+import * as PathHelper           from "./PathHelper";
 
-export default class Configuration implements IConfiguration, IConfigurationSection
+export class Configuration implements IConfiguration, IConfigurationSection
 {
 	readonly #path: string;
 	#root?: IRootConfiguration;

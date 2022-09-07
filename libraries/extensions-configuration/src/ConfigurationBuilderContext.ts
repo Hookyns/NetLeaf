@@ -1,6 +1,6 @@
 import { IFileProvider } from "@netleaf/extensions-file-provider";
 
-export default class ConfigurationBuilderContext
+export class ConfigurationBuilderContext
 {
 	static readonly FileProviderPropertyKey = "Configuration.FileProvider";
 

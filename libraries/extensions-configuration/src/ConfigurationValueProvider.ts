@@ -1,6 +1,6 @@
-import IConfigurationProvider from "./IConfigurationProvider";
+import { IConfigurationProvider } from "./IConfigurationProvider";
 
-export default class ConfigurationValueProvider
+export class ConfigurationValueProvider
 {
 	/**
 	 * Return value under specified key from configuration providers.

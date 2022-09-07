@@ -1,11 +1,9 @@
-import IConfiguration         from "./IConfiguration";
-import IConfigurationProvider from "./IConfigurationProvider";
+import { IConfiguration }         from "./IConfiguration";
+import { IConfigurationProvider } from "./IConfigurationProvider";
 
-type IRootConfiguration<T = any> = IConfiguration<T> & {
+export type IRootConfiguration<T = any> = IConfiguration<T> & {
 	/**
 	 * Array of configuration providers used to create this configuration.
 	 */
 	providers: ReadonlyArray<IConfigurationProvider>;
 };
-
-export default IRootConfiguration;

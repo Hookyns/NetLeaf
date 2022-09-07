@@ -1,15 +1,15 @@
-import ConfigurationBuilderContext from "./ConfigurationBuilderContext";
-import ConfigurationValueProvider  from "./ConfigurationValueProvider";
-import IConfigurationProvider      from "./IConfigurationProvider";
-import IRootConfiguration          from "./IRootConfiguration";
+import { ConfigurationBuilderContext } from "./ConfigurationBuilderContext";
+import { ConfigurationValueProvider }  from "./ConfigurationValueProvider";
+import { IConfigurationProvider }      from "./IConfigurationProvider";
+import { IRootConfiguration }          from "./IRootConfiguration";
 
-export default interface IConfigurationBuilder
-{	
+export interface IConfigurationBuilder
+{
 	/**
 	 * Get configuration builder context.
 	 */
 	readonly context: ConfigurationBuilderContext;
-	
+
 	/**
 	 * Add an IConfigurationProvider that reads configuration from JSON file.
 	 * @param configPath
@@ -18,7 +18,8 @@ export default interface IConfigurationBuilder
 
 	/**
 	 * Add an IConfigurationProvider that reads configuration from JS file.
-	 * @description JS file should have default export and exported object can be plain object with configuration or Promise.
+	 * @description JS file should have default export and exported object 
+	 * can be plain object with configuration or Promise.
 	 * @param configPath
 	 */
 	addJsFile(configPath: string): IConfigurationBuilder;
@@ -56,7 +57,7 @@ export default interface IConfigurationBuilder
 	 * Set provider which resolves values from configuration.
 	 * @param valueProvider
 	 */
-	setValueProvider(valueProvider: ConfigurationValueProvider): IConfigurationBuilder
+	setValueProvider(valueProvider: ConfigurationValueProvider): IConfigurationBuilder;
 
 	/**
 	 * Build configuration.

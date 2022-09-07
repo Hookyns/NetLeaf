@@ -1,4 +1,4 @@
-import ConsoleConfigurationProvider   from "../../libraries/extensions-configuration/src/providers/ConsoleConfigurationProvider";
+import { ConsoleConfigurationProvider } from "../../libraries/extensions-configuration/src/providers/ConsoleConfigurationProvider";
 
 const configProvider = new ConsoleConfigurationProvider(["some", "params", "-p", "tsconfig.json", "--coverage", "-abc", "--number", "5"]);
 

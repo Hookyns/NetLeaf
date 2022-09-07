@@ -1,9 +1,9 @@
-import IConfigurationSection from "./IConfigurationSection";
+import { IConfigurationSection } from "./IConfigurationSection";
 
 /**
  * @template TConfig
  */
-type IConfiguration<TConfig = any> = {
+export type IConfiguration<TConfig = any> = {
 	/**
 	 * Return configuration value with a specified key or return undefined if value does not exist.
 	 * @template TVal
@@ -41,5 +41,3 @@ type IConfiguration<TConfig = any> = {
 	 */
 	getSections<TSection = unknown>(): Array<IConfigurationSection<TSection>>;
 };
-
-export default IConfiguration;

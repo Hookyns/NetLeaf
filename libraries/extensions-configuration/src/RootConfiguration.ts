@@ -1,9 +1,9 @@
-import Configuration              from "./Configuration";
-import ConfigurationValueProvider from "./ConfigurationValueProvider";
-import IConfigurationProvider     from "./IConfigurationProvider";
-import IRootConfiguration         from "./IRootConfiguration";
+import { Configuration }              from "./Configuration";
+import { ConfigurationValueProvider } from "./ConfigurationValueProvider";
+import { IConfigurationProvider }     from "./IConfigurationProvider";
+import { IRootConfiguration }         from "./IRootConfiguration";
 
-export default class RootConfiguration extends Configuration implements IRootConfiguration
+export class RootConfiguration extends Configuration implements IRootConfiguration
 {
 	readonly #providers: IConfigurationProvider[];
 	readonly #valueProvider: ConfigurationValueProvider;

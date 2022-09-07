@@ -1,8 +1,11 @@
-import * as path                   from "path";
-import ConfigurationBuilderContext from "../../libraries/extensions-configuration/src/ConfigurationBuilderContext";
-import JsonConfigurationProvider   from "../../libraries/extensions-configuration/src/providers/JsonConfigurationProvider";
+import * as path                       from "path";
+import { ConfigurationBuilderContext } from "../../libraries/extensions-configuration/src/ConfigurationBuilderContext";
+import { JsonConfigurationProvider }   from "../../libraries/extensions-configuration/src/providers/JsonConfigurationProvider";
 
-const configProvider = new JsonConfigurationProvider(path.join(__dirname, "files", "config.json"), new ConfigurationBuilderContext());
+const configProvider = new JsonConfigurationProvider(
+	path.join(__dirname, "files", "config.json"),
+	new ConfigurationBuilderContext()
+);
 
 test("get() before load() throws", () => {
 	expect(() => configProvider.get("")).toThrow(/loaded/);

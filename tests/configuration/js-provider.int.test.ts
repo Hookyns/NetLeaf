@@ -1,6 +1,6 @@
-import ConfigurationBuilderContext from "../../libraries/extensions-configuration/src/ConfigurationBuilderContext";
-import JsConfigurationProvider     from "../../libraries/extensions-configuration/src/providers/JsConfigurationProvider";
-import * as path                   from "path";
+import { ConfigurationBuilderContext } from "../../libraries/extensions-configuration/src/ConfigurationBuilderContext";
+import { JsConfigurationProvider }     from "../../libraries/extensions-configuration/src/providers/JsConfigurationProvider";
+import * as path                       from "path";
 
 const context = new ConfigurationBuilderContext();
 const configProvider = new JsConfigurationProvider(path.join(__dirname, "files", "config.js"), context);
@@ -39,7 +39,7 @@ const wrongConfigProvider = new JsConfigurationProvider(path.join(__dirname, "fi
 
 test("load() throws when config return something else than plain JS object.", async () => {
 	expect.assertions(1);
-	
+
 	try
 	{
 		await wrongConfigProvider.load();
@@ -63,7 +63,11 @@ test("get('foo') of async config return correct value", async () => {
 });
 
 // Default export config tests
-const defaultExportConfigProvider = new JsConfigurationProvider(path.join(__dirname, "files", "config-default-export.js"), context);
+const defaultExportConfigProvider = new JsConfigurationProvider(path.join(
+	__dirname,
+	"files",
+	"config-default-export.js"
+), context);
 
 test("load() of config with default export finish without error", () => {
 	expect(async () => await defaultExportConfigProvider.load()).not.toThrow();

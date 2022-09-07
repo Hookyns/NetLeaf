@@ -1,7 +1,7 @@
-import IConfigurationProvider from "../IConfigurationProvider";
-import { KeySplitChar }       from "../PathHelper";
+import { IConfigurationProvider } from "../IConfigurationProvider";
+import { KeySplitChar }           from "../PathHelper";
 
-export default abstract class ConfigurationProviderBase implements IConfigurationProvider
+export abstract class ConfigurationProviderBase implements IConfigurationProvider
 {
 	/**
 	 * Loaded configuration

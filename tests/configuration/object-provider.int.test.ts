@@ -1,4 +1,4 @@
-import ObjectConfigurationProvider   from "../../libraries/extensions-configuration/src/providers/ObjectConfigurationProvider";
+import { ObjectConfigurationProvider } from "../../libraries/extensions-configuration/src/providers/ObjectConfigurationProvider";
 
 const configProvider = new ObjectConfigurationProvider({
 	foo: "Lorem ipsum dolor sit amet",

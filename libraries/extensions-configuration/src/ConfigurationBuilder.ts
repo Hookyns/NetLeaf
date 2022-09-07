@@ -1,21 +1,21 @@
-import * as path                    from "path";
-import ErrorWrap                    from "@netleaf/common/src/errors/ErrorWrap";
+import * as path                        from "path";
+import ErrorWrap                        from "@netleaf/common/src/errors/ErrorWrap";
 import {
 	IFileProvider,
 	PhysicalFileProvider
-}                                   from "@netleaf/extensions-file-provider";
-import ConfigurationBuilderContext  from "./ConfigurationBuilderContext";
-import ConfigurationValueProvider   from "./ConfigurationValueProvider";
-import IConfigurationBuilder        from "./IConfigurationBuilder";
-import IConfigurationProvider       from "./IConfigurationProvider";
-import IRootConfiguration           from "./IRootConfiguration";
-import ConsoleConfigurationProvider from "./providers/ConsoleConfigurationProvider";
-import JsConfigurationProvider      from "./providers/JsConfigurationProvider";
-import JsonConfigurationProvider    from "./providers/JsonConfigurationProvider";
-import ObjectConfigurationProvider  from "./providers/ObjectConfigurationProvider";
-import RootConfiguration            from "./RootConfiguration";
+}                                       from "@netleaf/extensions-file-provider";
+import { ConfigurationBuilderContext }  from "./ConfigurationBuilderContext";
+import { ConfigurationValueProvider }   from "./ConfigurationValueProvider";
+import { IConfigurationBuilder }        from "./IConfigurationBuilder";
+import { IConfigurationProvider }       from "./IConfigurationProvider";
+import { IRootConfiguration }           from "./IRootConfiguration";
+import { ConsoleConfigurationProvider } from "./providers/ConsoleConfigurationProvider";
+import { JsConfigurationProvider }      from "./providers/JsConfigurationProvider";
+import { JsonConfigurationProvider }    from "./providers/JsonConfigurationProvider";
+import { ObjectConfigurationProvider }  from "./providers/ObjectConfigurationProvider";
+import { RootConfiguration }            from "./RootConfiguration";
 
-export default class ConfigurationBuilder implements IConfigurationBuilder
+export class ConfigurationBuilder implements IConfigurationBuilder
 {
 	/**
 	 * Collection of providers.

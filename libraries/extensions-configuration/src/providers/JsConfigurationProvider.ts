@@ -1,9 +1,9 @@
-import ErrorWrap from "@netleaf/common/src/errors/ErrorWrap";
-import * as path from "path";
-import ConfigurationBuilderContext from "../ConfigurationBuilderContext";
-import ConfigurationProviderBase from "./ConfigurationProviderBase";
+import ErrorWrap                       from "@netleaf/common/src/errors/ErrorWrap";
+import * as path                       from "path";
+import { ConfigurationBuilderContext } from "../ConfigurationBuilderContext";
+import { ConfigurationProviderBase }   from "./ConfigurationProviderBase";
 
-export default class JsConfigurationProvider extends ConfigurationProviderBase
+export class JsConfigurationProvider extends ConfigurationProviderBase
 {
 	/**
 	 * Path to configuration file.
@@ -66,7 +66,7 @@ export default class JsConfigurationProvider extends ConfigurationProviderBase
 		else if (!path.isAbsolute(configurationPath))
 		{
 			throw new Error(`Unable to resolve path of JS configuration file '${configurationPath}'.`
-				+ "Use absolute path or set FileProvider instance into ConfigurationBuilderContext" 
+				+ "Use absolute path or set FileProvider instance into ConfigurationBuilderContext"
 				+ ` properties with key '${ConfigurationBuilderContext.FileProviderPropertyKey}'.`);
 		}
 
