@@ -3,6 +3,7 @@ import { readFile }                    from "fs/promises";
 import { parse }                       from "json5";
 import * as path                       from "path";
 import { ConfigurationBuilderContext } from "../ConfigurationBuilderContext";
+import { FileConfigurationOptions }    from "../FileConfigurationOptions";
 import { ConfigurationProviderBase }   from "./ConfigurationProviderBase";
 
 export class JsonConfigurationProvider extends ConfigurationProviderBase
@@ -20,15 +21,23 @@ export class JsonConfigurationProvider extends ConfigurationProviderBase
 	readonly #context: ConfigurationBuilderContext;
 
 	/**
+	 * Options.
+	 * @type {FileConfigurationOptions}
+	 */
+	readonly #options: FileConfigurationOptions;
+
+	/**
 	 * Construct instance of ConfigurationProvider
 	 * @param configurationPath
 	 * @param context
+	 * @param options
 	 */
-	constructor(configurationPath: string, context: ConfigurationBuilderContext)
+	constructor(configurationPath: string, context: ConfigurationBuilderContext, options?: FileConfigurationOptions)
 	{
 		super();
 		this.#configurationPath = configurationPath;
 		this.#context = context;
+		this.#options = options || {};
 	}
 
 	/**
@@ -49,7 +58,7 @@ export class JsonConfigurationProvider extends ConfigurationProviderBase
 	 */
 	async load(): Promise<void>
 	{
-		const fileProvider = this.#context.getFileProvider();
+		const fileProvider = this.#options?.fileResolver ?? this.#context.getFileProvider();
 		let configurationPath = this.#configurationPath;
 
 		if (fileProvider)
@@ -58,6 +67,12 @@ export class JsonConfigurationProvider extends ConfigurationProviderBase
 
 			if (!fileInfo?.exists)
 			{
+				if (this.#options?.optional)
+				{
+					this.configuration = {};
+					return;
+				}
+
 				throw new Error(`Configuration JSON file '${configurationPath}' does not exists or is not accessible.`);
 			}
 

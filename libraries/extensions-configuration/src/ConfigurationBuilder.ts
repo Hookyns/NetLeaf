@@ -6,6 +6,7 @@ import {
 }                                       from "@netleaf/extensions-file-provider";
 import { ConfigurationBuilderContext }  from "./ConfigurationBuilderContext";
 import { ConfigurationValueProvider }   from "./ConfigurationValueProvider";
+import { FileConfigurationOptions }     from "./FileConfigurationOptions";
 import { IConfigurationBuilder }        from "./IConfigurationBuilder";
 import { IConfigurationProvider }       from "./IConfigurationProvider";
 import { IRootConfiguration }           from "./IRootConfiguration";
@@ -130,18 +131,18 @@ export class ConfigurationBuilder implements IConfigurationBuilder
 	/**
 	 * @inheritDoc
 	 */
-	addJsFile(configPath: string, fileResolver?: IFileProvider): IConfigurationBuilder
+	addJsFile(configPath: string, options?: FileConfigurationOptions): IConfigurationBuilder
 	{
-		this.#providers.push(new JsConfigurationProvider(configPath, this.#context));
+		this.#providers.push(new JsConfigurationProvider(configPath, this.#context, options));
 		return this;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	addJsonFile(configPath: string): IConfigurationBuilder
+	addJsonFile(configPath: string, options?: FileConfigurationOptions): IConfigurationBuilder
 	{
-		this.#providers.push(new JsonConfigurationProvider(configPath, this.#context));
+		this.#providers.push(new JsonConfigurationProvider(configPath, this.#context, options));
 		return this;
 	}
 
