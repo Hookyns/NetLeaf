@@ -1,7 +1,7 @@
 import IConfiguration         from "./IConfiguration";
 import IConfigurationProvider from "./IConfigurationProvider";
 
-type IRootConfiguration = IConfiguration & {
+type IRootConfiguration<T = any> = IConfiguration<T> & {
 	/**
 	 * Array of configuration providers used to create this configuration.
 	 */

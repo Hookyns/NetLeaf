@@ -1,16 +1,19 @@
-import ErrorWrap                               from "@netleaf/common/src/errors/ErrorWrap";
-import { IFileProvider, PhysicalFileProvider } from "@netleaf/extensions-file-provider";
-import * as path                               from "path";
-import ConfigurationBuilderContext             from "./ConfigurationBuilderContext";
-import ConfigurationValueProvider              from "./ConfigurationValueProvider";
-import IConfigurationBuilder                   from "./IConfigurationBuilder";
-import IConfigurationProvider                  from "./IConfigurationProvider";
-import IRootConfiguration                      from "./IRootConfiguration";
-import ConsoleConfigurationProvider            from "./providers/ConsoleConfigurationProvider";
-import JsConfigurationProvider                 from "./providers/JsConfigurationProvider";
-import JsonConfigurationProvider               from "./providers/JsonConfigurationProvider";
-import ObjectConfigurationProvider             from "./providers/ObjectConfigurationProvider";
-import RootConfiguration                       from "./RootConfiguration";
+import * as path                    from "path";
+import ErrorWrap                    from "@netleaf/common/src/errors/ErrorWrap";
+import {
+	IFileProvider,
+	PhysicalFileProvider
+}                                   from "@netleaf/extensions-file-provider";
+import ConfigurationBuilderContext  from "./ConfigurationBuilderContext";
+import ConfigurationValueProvider   from "./ConfigurationValueProvider";
+import IConfigurationBuilder        from "./IConfigurationBuilder";
+import IConfigurationProvider       from "./IConfigurationProvider";
+import IRootConfiguration           from "./IRootConfiguration";
+import ConsoleConfigurationProvider from "./providers/ConsoleConfigurationProvider";
+import JsConfigurationProvider      from "./providers/JsConfigurationProvider";
+import JsonConfigurationProvider    from "./providers/JsonConfigurationProvider";
+import ObjectConfigurationProvider  from "./providers/ObjectConfigurationProvider";
+import RootConfiguration            from "./RootConfiguration";
 
 export default class ConfigurationBuilder implements IConfigurationBuilder
 {
@@ -161,12 +164,16 @@ export default class ConfigurationBuilder implements IConfigurationBuilder
 			// Load configurations of all providers
 			await Promise.all(this.#providers.map(provider => provider.load()));
 
-			// Create and return root configuration; reverse providers cuz of first match return behavior; and we want to prioritize last - like overrides.
+			// Create and return root configuration; reverse providers cuz of first match return behavior; and we want
+			// to prioritize last - like overrides.
 			return new RootConfiguration(this.#providers.slice().reverse(), this.#configurationValueProvider);
 		}
 		catch (ex)
 		{
-			throw new ErrorWrap("Error thrown while loading configurations of registered configuration providers.", ex);
+			throw new ErrorWrap(
+				"Error thrown while loading configurations of registered configuration providers.",
+				ex as Error
+			);
 		}
 	}
 

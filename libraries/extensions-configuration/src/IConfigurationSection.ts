@@ -1,9 +1,9 @@
 import IConfiguration from "./IConfiguration";
 
-type IConfigurationSection = IConfiguration &
+type IConfigurationSection<T = any> = IConfiguration<T> &
 	{
 		readonly path: string;
-		readonly value: any;
+		readonly value: T;
 	};
 
 export default IConfigurationSection;

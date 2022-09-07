@@ -1,7 +1,7 @@
-import ErrorWrap                   from "@netleaf/common/src/errors/ErrorWrap";
-import * as path                   from "path";
+import ErrorWrap from "@netleaf/common/src/errors/ErrorWrap";
+import * as path from "path";
 import ConfigurationBuilderContext from "../ConfigurationBuilderContext";
-import ConfigurationProviderBase   from "./ConfigurationProviderBase";
+import ConfigurationProviderBase from "./ConfigurationProviderBase";
 
 export default class JsConfigurationProvider extends ConfigurationProviderBase
 {
@@ -66,7 +66,8 @@ export default class JsConfigurationProvider extends ConfigurationProviderBase
 		else if (!path.isAbsolute(configurationPath))
 		{
 			throw new Error(`Unable to resolve path of JS configuration file '${configurationPath}'.`
-				+ `Use absolute path or set FileProvider instance into ConfigurationBuilderContext properties with key '${ConfigurationBuilderContext.FileProviderPropertyKey}'.`);
+				+ "Use absolute path or set FileProvider instance into ConfigurationBuilderContext" 
+				+ ` properties with key '${ConfigurationBuilderContext.FileProviderPropertyKey}'.`);
 		}
 
 		try
@@ -75,7 +76,10 @@ export default class JsConfigurationProvider extends ConfigurationProviderBase
 		}
 		catch (ex)
 		{
-			throw new ErrorWrap(`Error thrown while loading configuration from JS file '${this.#configurationPath}'.`, ex);
+			throw new ErrorWrap(
+				`Error thrown while loading configuration from JS file '${this.#configurationPath}'.`,
+				ex as Error
+			);
 		}
 
 		if (result.hasOwnProperty("default"))
@@ -91,7 +95,10 @@ export default class JsConfigurationProvider extends ConfigurationProviderBase
 			}
 			catch (ex)
 			{
-				throw new ErrorWrap(`Promise returned from JS configuration file '${this.#configurationPath}' has been rejected.`, ex);
+				throw new ErrorWrap(
+					`Promise returned from JS configuration file '${this.#configurationPath}' has been rejected.`,
+					ex as Error
+				);
 			}
 		}
 

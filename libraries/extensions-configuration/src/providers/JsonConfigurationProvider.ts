@@ -76,7 +76,10 @@ export default class JsonConfigurationProvider extends ConfigurationProviderBase
 		}
 		catch (ex)
 		{
-			throw new ErrorWrap(`Error thrown while loading configuration from JSON file '${configurationPath}'.`, ex);
+			throw new ErrorWrap(
+				`Error thrown while loading configuration from JSON file '${configurationPath}'.`,
+				ex as Error
+			);
 		}
 	}
 

@@ -46,7 +46,7 @@ test("load() throws when config return something else than plain JS object.", as
 	}
 	catch (ex)
 	{
-		expect(ex.message).toMatch(/plain JS object/i);
+		expect((ex as Error).message).toMatch(/plain JS object/i);
 	}
 });
 

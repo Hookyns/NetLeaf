@@ -44,7 +44,7 @@ export default class ConsoleConfigurationProvider extends ConfigurationProviderB
 		}
 		catch (ex)
 		{
-			throw new ErrorWrap(`Error thrown while parsing configuration from console arguments.`, ex);
+			throw new ErrorWrap(`Error thrown while parsing configuration from console arguments.`, ex as Error);
 		}
 	}
 

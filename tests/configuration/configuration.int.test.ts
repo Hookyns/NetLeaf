@@ -8,6 +8,19 @@ test("ConfigurationBuilder.setRootDirectory creates FileProvider", () => {
 	expect(builder.context.getFileProvider()?.constructor.name).toBe("PhysicalFileProvider");
 });
 
+class Foo {}
+type SomeConfigType = {
+	foo: string,
+	bar: {
+		baz: string,
+		nested: {
+			value: boolean,
+			number: number,
+			cls: Foo
+		}
+	}
+}
+
 describe("Configuration builder test", () => {
 	const builder = new ConfigurationBuilder()
 		.setRootDirectory(path.join(__dirname, "files"))
@@ -15,7 +28,7 @@ describe("Configuration builder test", () => {
 		.addJsFile("config.js")
 	;
 	const configAwaiter = builder.build();
-	let config: IRootConfiguration;
+	let config: IRootConfiguration<SomeConfigType>;
 	
 	beforeAll(async() => {
 		config = await configAwaiter;
@@ -35,5 +48,10 @@ describe("Configuration builder test", () => {
 
 	test("get() with path", async () => {
 		expect(config.get("bar.baz")).toContain("Lipsum");
+	});
+
+	test("get() from section", async () => {
+		expect(config.getSection("bar").get("nested")?.number).toBe(5);
+		expect(config.getSection("barddsd").get("h")).toBe(undefined);
 	});
 });

@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@netleaf/extensions-configuration",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Configuration extension for NetLeaf application host framework.",
     "main": "index.js",
     "types": "index.d.ts",
