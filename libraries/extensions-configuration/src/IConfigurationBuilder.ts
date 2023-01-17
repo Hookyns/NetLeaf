@@ -1,5 +1,6 @@
 import { ConfigurationBuilderContext } from "./ConfigurationBuilderContext";
 import { ConfigurationValueProvider }  from "./ConfigurationValueProvider";
+import { FileConfigurationOptions }    from "./FileConfigurationOptions";
 import { IConfigurationProvider }      from "./IConfigurationProvider";
 import { IRootConfiguration }          from "./IRootConfiguration";
 
@@ -13,16 +14,18 @@ export interface IConfigurationBuilder
 	/**
 	 * Add an IConfigurationProvider that reads configuration from JSON file.
 	 * @param configPath
+	 * @param options
 	 */
-	addJsonFile(configPath: string): IConfigurationBuilder;
+	addJsonFile(configPath: string, options?: FileConfigurationOptions): IConfigurationBuilder;
 
 	/**
 	 * Add an IConfigurationProvider that reads configuration from JS file.
-	 * @description JS file should have default export and exported object 
+	 * @description JS file should have default export and exported object
 	 * can be plain object with configuration or Promise.
 	 * @param configPath
+	 * @param options
 	 */
-	addJsFile(configPath: string): IConfigurationBuilder;
+	addJsFile(configPath: string, options?: FileConfigurationOptions): IConfigurationBuilder;
 
 	/**
 	 * Adds an IConfigurationProvider that reads configuration values from environment variables.
