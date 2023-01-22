@@ -1,6 +1,6 @@
 {
     "name": "@netleaf/extensions-file-provider",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "FileProvider extension for NetLeaf application host framework.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
