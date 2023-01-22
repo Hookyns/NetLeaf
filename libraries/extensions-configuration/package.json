@@ -32,8 +32,8 @@
         "@types/minimist": "^1.2.2"
     },
     "dependencies": {
-        "@netleaf/common": "workspace:*",
-        "@netleaf/extensions-file-provider": "workspace:*",
+        "@netleaf/common": "^workspace:*",
+        "@netleaf/extensions-file-provider": "^workspace:*",
         "json5": "^2.2.0",
         "minimist": "^1.2.6"
     },
