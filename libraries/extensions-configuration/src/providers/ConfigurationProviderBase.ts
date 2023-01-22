@@ -39,5 +39,5 @@ export abstract class ConfigurationProviderBase implements IConfigurationProvide
 		return obj;
 	}
 
-	abstract load(): Promise<void>;
+	abstract load(): Promise<void> | void;
 }

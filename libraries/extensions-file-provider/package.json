@@ -1,15 +1,14 @@
 {
-    "private": true,
     "name": "@netleaf/extensions-file-provider",
     "version": "0.2.1",
     "description": "FileProvider extension for NetLeaf application host framework.",
-    "main": "index.js",
-    "types": "index.d.ts",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc && node ../../scripts/postbuild.mjs",
         "publish": "exit 1",
-        "prepare": "npm run build",
+        "prepare": "tsc",
+        "build": "tsc && node ../../scripts/postbuild.mjs",
         "publish-dist": "npm run build && cd dist && npm publish && cd .."
     },
     "keywords": [
@@ -30,7 +29,7 @@
         "typescript": "^4.2.3"
     },
     "dependencies": {
-        "@netleaf/common": "^0.1.0"
+        "@netleaf/common": "workspace:*"
     },
     "files": [
         "**/*.js",

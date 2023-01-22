@@ -1,7 +1,8 @@
-import ErrorWrap                       from "@netleaf/common/src/errors/ErrorWrap";
+import { ErrorWrap }                   from "@netleaf/common";
 import * as path                       from "path";
 import { ConfigurationBuilderContext } from "../ConfigurationBuilderContext";
 import { FileConfigurationOptions }    from "../FileConfigurationOptions";
+import { resolveSync }                 from "../resolveSync";
 import { ConfigurationProviderBase }   from "./ConfigurationProviderBase";
 
 export class JsConfigurationProvider extends ConfigurationProviderBase
@@ -54,11 +55,19 @@ export class JsConfigurationProvider extends ConfigurationProviderBase
 	/**
 	 * @inheritDoc
 	 */
-	async load(): Promise<void>
+	load(): Promise<void> | void
 	{
-		let result;
+		if (this.#options?.synchronous === true)
+		{
+			return this.loadSync();
+		}
 
-		const fileProvider = this.#options?.fileResolver ?? this.#context.getFileProvider();
+		return this.loadAsync();
+	}
+
+	private async loadAsync()
+	{
+		const fileProvider = this.#options?.fileProvider ?? this.#context.getFileProvider();
 		let configurationPath = this.#configurationPath;
 
 		if (fileProvider)
@@ -84,6 +93,8 @@ export class JsConfigurationProvider extends ConfigurationProviderBase
 				+ "Use absolute path or set FileProvider instance into ConfigurationBuilderContext"
 				+ ` properties with key '${ConfigurationBuilderContext.FileProviderPropertyKey}'.`);
 		}
+
+		let result;
 
 		try
 		{
@@ -127,4 +138,83 @@ export class JsConfigurationProvider extends ConfigurationProviderBase
 		}
 	}
 
+	private loadSync()
+	{
+
+		const fileProvider = this.#options?.fileProvider ?? this.#context.getFileProvider();
+		let configurationPath = this.#configurationPath;
+		let result;
+
+		if (fileProvider)
+		{
+			const fileInfo = fileProvider.getFileInfoSync(configurationPath);
+
+			if (!fileInfo.exists)
+			{
+				if (this.#options?.optional)
+				{
+					this.configuration = {};
+					return;
+				}
+
+				throw new Error(`Configuration JS file '${configurationPath}' does not exists or is not accessible.`);
+			}
+
+			configurationPath = fileInfo.path;
+		}
+		else if (!path.isAbsolute(configurationPath))
+		{
+			throw new Error(`Unable to resolve path of JS configuration file '${configurationPath}'.`
+				+ "Use absolute path or set FileProvider instance into ConfigurationBuilderContext"
+				+ ` properties with key '${ConfigurationBuilderContext.FileProviderPropertyKey}'.`);
+		}
+
+		try
+		{
+			if (typeof require !== "undefined")
+			{
+				result = require(configurationPath);
+			}
+			else
+			{
+				result = resolveSync(import(configurationPath));
+			}
+		}
+		catch (ex)
+		{
+			throw new ErrorWrap(
+				`Error thrown while loading configuration from JS file '${this.#configurationPath}'.`,
+				ex as Error
+			);
+		}
+
+		if (result.hasOwnProperty("default"))
+		{
+			result = result.default;
+		}
+
+		if (result instanceof Promise)
+		{
+			try
+			{
+				result = resolveSync(result);
+			}
+			catch (ex)
+			{
+				throw new ErrorWrap(
+					`Failed to synchronously resolve Promise returned from JS configuration file '${this.#configurationPath}'.`,
+					ex as Error
+				);
+			}
+		}
+
+		if (result.constructor == Object)
+		{
+			this.configuration = result;
+		}
+		else
+		{
+			throw new Error(`Unable to get configuration from JS file '${this.#configurationPath}'. Returned value is not plain JS object.`);
+		}
+	}
 }

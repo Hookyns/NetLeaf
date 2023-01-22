@@ -5,7 +5,7 @@ const EndOfLineRegex = /\r?\n/g;
 /**
  * Error class for wrapping caught errors with additional details.
  */
-export default class ErrorWrap extends Error
+export class ErrorWrap extends Error
 {
 	/**
 	 * Inner error backing field.

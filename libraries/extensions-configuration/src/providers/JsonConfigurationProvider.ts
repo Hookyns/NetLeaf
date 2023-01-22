@@ -1,5 +1,6 @@
-import ErrorWrap                       from "@netleaf/common/src/errors/ErrorWrap";
+import { ErrorWrap }                   from "@netleaf/common";
 import { readFile }                    from "fs/promises";
+import { readFileSync }                from "fs";
 import { parse }                       from "json5";
 import * as path                       from "path";
 import { ConfigurationBuilderContext } from "../ConfigurationBuilderContext";
@@ -56,9 +57,61 @@ export class JsonConfigurationProvider extends ConfigurationProviderBase
 	/**
 	 * @inheritDoc
 	 */
-	async load(): Promise<void>
+	load(): Promise<void> | void
 	{
-		const fileProvider = this.#options?.fileResolver ?? this.#context.getFileProvider();
+		if (this.#options?.synchronous === true)
+		{
+			return this.loadSync();
+		}
+
+		return this.loadAsync();
+	}
+
+	loadSync(): void
+	{
+		const fileProvider = this.#options?.fileProvider ?? this.#context.getFileProvider();
+		let configurationPath = this.#configurationPath;
+
+		if (fileProvider)
+		{
+			const fileInfo = fileProvider.getFileInfoSync(configurationPath);
+
+			if (!fileInfo?.exists)
+			{
+				if (this.#options?.optional)
+				{
+					this.configuration = {};
+					return;
+				}
+
+				throw new Error(`Configuration JSON file '${configurationPath}' does not exists or is not accessible.`);
+			}
+
+			configurationPath = fileInfo.path;
+		}
+		else if (!path.isAbsolute(configurationPath))
+		{
+			throw new Error(`Unable to resolve path of JSON configuration file '${configurationPath}'.`
+				+ `Use absolute path or set FileProvider instance into ConfigurationBuilderContext properties with key '${ConfigurationBuilderContext.FileProviderPropertyKey}'.`);
+		}
+
+		try
+		{
+			const json: string = readFileSync(configurationPath, { encoding: "utf-8" });
+			this.configuration = parse(json);
+		}
+		catch (ex)
+		{
+			throw new ErrorWrap(
+				`Error thrown while loading configuration from JSON file '${configurationPath}'.`,
+				ex as Error
+			);
+		}
+	}
+
+	async loadAsync(): Promise<void>
+	{
+		const fileProvider = this.#options?.fileProvider ?? this.#context.getFileProvider();
 		let configurationPath = this.#configurationPath;
 
 		if (fileProvider)

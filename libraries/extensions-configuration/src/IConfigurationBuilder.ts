@@ -66,4 +66,9 @@ export interface IConfigurationBuilder
 	 * Build configuration.
 	 */
 	build(): Promise<IRootConfiguration>;
+
+	/**
+	 * Build configuration.
+	 */
+	buildSync(): IRootConfiguration
 }

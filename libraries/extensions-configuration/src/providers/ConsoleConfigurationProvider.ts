@@ -1,4 +1,4 @@
-import ErrorWrap                     from "@netleaf/common/src/errors/ErrorWrap";
+import { ErrorWrap }                 from "@netleaf/common";
 import * as minimist                 from "minimist";
 import { ConfigurationProviderBase } from "./ConfigurationProviderBase";
 
@@ -36,7 +36,7 @@ export class ConsoleConfigurationProvider extends ConfigurationProviderBase
 	/**
 	 * @inheritDoc
 	 */
-	async load(): Promise<void>
+	load(): Promise<void> | void
 	{
 		try
 		{

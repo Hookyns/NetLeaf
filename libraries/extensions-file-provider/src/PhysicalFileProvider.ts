@@ -1,9 +1,13 @@
-import * as fs               from "fs/promises";
-import { basename, resolve } from "path";
-import IFileInfo             from "./IFileInfo";
-import IFileProvider         from "./IFileProvider";
+import { lstat }         from "fs/promises";
+import { lstatSync }     from "fs";
+import {
+	basename,
+	resolve
+}                        from "path";
+import { IFileInfo }     from "./IFileInfo";
+import { IFileProvider } from "./IFileProvider";
 
-export default class PhysicalFileProvider implements IFileProvider
+export class PhysicalFileProvider implements IFileProvider
 {
 	readonly #rootDirectory: string;
 
@@ -25,7 +29,36 @@ export default class PhysicalFileProvider implements IFileProvider
 
 		try
 		{
-			const stats = await fs.lstat(path);
+			const stats = await lstat(path);
+
+			return {
+				isDirectory: stats.isDirectory(),
+				name: basename(path),
+				path: path,
+				exists: true
+			};
+		}
+		catch (ex)
+		{
+			return {
+				isDirectory: false,
+				name: basename(path),
+				path: path,
+				exists: false
+			};
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	getFileInfoSync(path: string): IFileInfo
+	{
+		path = resolve(this.#rootDirectory, path);
+
+		try
+		{
+			const stats = lstatSync(path);
 
 			return {
 				isDirectory: stats.isDirectory(),

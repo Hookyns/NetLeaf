@@ -8,6 +8,7 @@ export interface IConfigurationProvider
 
 	/**
 	 * Loads configuration values from the source represented by this ConfigurationProvider.
+	 * @returns {Promise<void>}
 	 */
-	load(): Promise<void>;
+	load(): Promise<void> | void;
 }

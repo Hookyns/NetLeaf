@@ -1,0 +1,4 @@
+﻿packages:
+    - 'libraries/common'
+    - 'libraries/extensions-file-provider'
+    - 'libraries/extensions-configuration'

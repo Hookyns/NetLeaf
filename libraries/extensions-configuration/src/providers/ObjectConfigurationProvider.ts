@@ -34,7 +34,7 @@ export class ObjectConfigurationProvider extends ConfigurationProviderBase
 	/**
 	 * @inheritDoc
 	 */
-	async load(): Promise<void>
+	load(): Promise<void> | void
 	{
 		if (this.#object.constructor != Object)
 		{
@@ -43,5 +43,4 @@ export class ObjectConfigurationProvider extends ConfigurationProviderBase
 
 		this.configuration = this.#object;
 	}
-
 }

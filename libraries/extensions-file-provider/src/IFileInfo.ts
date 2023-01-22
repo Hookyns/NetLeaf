@@ -1,4 +1,4 @@
-export default interface IFileInfo
+export interface IFileInfo
 {
 	/**
 	 * Physical path to the file or directory.

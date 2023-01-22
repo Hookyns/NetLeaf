@@ -1,9 +1,6 @@
+import { PhysicalFileProvider }         from "@netleaf/extensions-file-provider";
 import * as path                        from "path";
-import ErrorWrap                        from "@netleaf/common/src/errors/ErrorWrap";
-import {
-	IFileProvider,
-	PhysicalFileProvider
-}                                       from "@netleaf/extensions-file-provider";
+import { ErrorWrap }                    from "@netleaf/common";
 import { ConfigurationBuilderContext }  from "./ConfigurationBuilderContext";
 import { ConfigurationValueProvider }   from "./ConfigurationValueProvider";
 import { FileConfigurationOptions }     from "./FileConfigurationOptions";
@@ -14,6 +11,7 @@ import { ConsoleConfigurationProvider } from "./providers/ConsoleConfigurationPr
 import { JsConfigurationProvider }      from "./providers/JsConfigurationProvider";
 import { JsonConfigurationProvider }    from "./providers/JsonConfigurationProvider";
 import { ObjectConfigurationProvider }  from "./providers/ObjectConfigurationProvider";
+import { resolveSync }                  from "./resolveSync";
 import { RootConfiguration }            from "./RootConfiguration";
 
 export class ConfigurationBuilder implements IConfigurationBuilder
@@ -179,7 +177,38 @@ export class ConfigurationBuilder implements IConfigurationBuilder
 	}
 
 	/**
-	 * Create {@link IFileProvider} over {@link rootDirectory}.
+	 * @inheritDoc
+	 */
+	buildSync(): IRootConfiguration
+	{
+		try
+		{
+			// Load configurations of all providers
+			for (let provider of this.#providers)
+			{
+				const rtrn = provider.load();
+
+				if (!!rtrn)
+				{
+					resolveSync(rtrn);
+				}
+			}
+
+			// Create and return root configuration; reverse providers cuz of first match return behavior; and we want
+			// to prioritize last - like overrides.
+			return new RootConfiguration(this.#providers.slice().reverse(), this.#configurationValueProvider);
+		}
+		catch (ex)
+		{
+			throw new ErrorWrap(
+				"Error thrown while loading configurations of registered configuration providers.",
+				ex as Error
+			);
+		}
+	}
+
+	/**
+	 * Create {@link IFileProvider} over {@link this.#rootDirectory}.
 	 * @private
 	 */
 	private createFileProvider()

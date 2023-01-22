@@ -1,10 +1,16 @@
-import IFileInfo from "./IFileInfo";
+import { IFileInfo } from "./IFileInfo";
 
-export default interface IFileProvider
+export interface IFileProvider
 {
 	/**
 	 * Get information about file at the given path.
 	 * @param path
 	 */
 	getFileInfo(path: string): Promise<IFileInfo>;
+
+	/**
+	 * Get information about file at the given path.
+	 * @param path
+	 */
+	getFileInfoSync(path: string): IFileInfo;
 }
